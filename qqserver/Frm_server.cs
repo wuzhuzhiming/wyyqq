@@ -29,6 +29,8 @@ namespace qqserver
         {
             //创建监听套接字实例
             s_listen = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            //关闭socket的优化
+            s_listen.NoDelay = true;
             //设置监听的ip和端口
             IPAddress addr = IPAddress.Parse("127.0.0.1");
             IPEndPoint point = new IPEndPoint(addr, int.Parse("5000"));
@@ -66,6 +68,8 @@ namespace qqserver
             {
                 //客户端连接成功，并创建一个与客户端进行通信的套接字
                 s_client = s_listen.Accept();
+                //关闭socket的优化
+                s_client.NoDelay = true;
                 //创建一个与客户端进行通信的线程
                 ParameterizedThreadStart pthst = new ParameterizedThreadStart(recv_data);
                 Thread th_recv = new Thread(pthst);
@@ -105,16 +109,36 @@ namespace qqserver
 
             //分解接收到的数据(数据已'&'作为分隔符)
             string[] arr_recv = str_recv.Split('&');
-            if (arr_recv.Length <= 1)
+            if (arr_recv.Length < 1)
             {
                 return;
             }
 
             //根据数据类型进行分发处理
-            if (arr_recv[0] == "login")
-            {
+            if(arr_recv[0] == "register"){
+                //注册
+                register(s_client, arr_recv);
+            }else if (arr_recv[0] == "login"){
                 //登陆
                 login(s_client, arr_recv);
+            }
+        }
+
+        //发送数据给指定客户端
+        public static void send_data(Socket s_client, string msg_data)
+        {
+
+        }
+
+        //注册
+        public static void register(Socket s_client, string[] arr_recv)
+        {
+            //账号、密码、昵称、性别、头像
+            if (arr_recv.Length < 6)
+            {
+                string str_msg = "retcode&注册失败";
+                send_data(s_client, str_msg);
+                return;
             }
         }
 

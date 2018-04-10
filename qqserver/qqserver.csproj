@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="dboperate.cs" />
     <Compile Include="Frm_server.cs">
       <SubType>Form</SubType>
     </Compile>
