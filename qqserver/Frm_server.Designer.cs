@@ -112,7 +112,6 @@
             this.Name = "Frm_server";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "即时通信-服务器";
-            //this.Load += new System.EventHandler(this.Frm_server_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

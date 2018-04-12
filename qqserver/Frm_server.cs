@@ -14,15 +14,15 @@ namespace qqserver
 {
     public partial class Frm_server : Form
     {
-        public Frm_server()
-        {
-            InitializeComponent();
-        }
-
         //监听套接字
         public static Socket s_listen = null;
         //监听线程
         Thread th_listen = null;
+
+        public Frm_server()
+        {
+            InitializeComponent();
+        }
 
         //"启动服务器" 按钮的处理
         private void Bt_start_Click(object sender, EventArgs e)
@@ -52,12 +52,6 @@ namespace qqserver
             Bt_start.Enabled = false;
         }
 
-        //窗体加载时的处理
-        //private void Frm_server_Load(object sender, EventArgs e)
-        //{
-
-        //}
-
         //监听客户端连接请求(线程函数)
         public static void listen_connect()
         {
@@ -80,7 +74,7 @@ namespace qqserver
             }
         }
 
-        //接受客户端发送的数据(带参数的线程函数)
+        //接受客户端发送的数据(线程函数)
         public static void recv_data(object s_clientparam)
         {
             Socket s_client = s_clientparam as Socket;
