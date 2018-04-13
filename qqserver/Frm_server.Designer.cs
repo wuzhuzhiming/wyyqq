@@ -76,7 +76,7 @@
             // 
             // Bt_start
             // 
-            this.Bt_start.Location = new System.Drawing.Point(176, 177);
+            this.Bt_start.Location = new System.Drawing.Point(176, 176);
             this.Bt_start.Margin = new System.Windows.Forms.Padding(2);
             this.Bt_start.Name = "Bt_start";
             this.Bt_start.Size = new System.Drawing.Size(83, 26);
@@ -88,7 +88,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(174, 237);
+            this.label3.Location = new System.Drawing.Point(178, 237);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(0, 12);
             this.label3.TabIndex = 5;

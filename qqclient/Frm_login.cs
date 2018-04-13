@@ -19,11 +19,14 @@ namespace qqclient
         //是否为左键
         bool is_mouse_left = false;
         //客户端套接字
-        Socket s_client = null;
+        static Socket s_client = null;
         //接收服务器消息的线程
         Thread th_recv = null;
         //是否已经连接服务器
         bool is_connect = false;
+
+        //主窗口
+        Frm_main frm_main = null;
 
         public Frm_login()
         {
@@ -77,31 +80,7 @@ namespace qqclient
         //窗口加载时的处理
         private void Frm_login_Load(object sender, EventArgs e)
         {
-            //创建套接字实例
-            s_client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            //关闭socket的优化
-            s_client.NoDelay = true;
-            //设置ip和端口
-            IPAddress addr = IPAddress.Parse("127.0.0.1");
-            IPEndPoint point = new IPEndPoint(addr, int.Parse("5000"));
-
-            //连接服务器
-            try
-            {
-                s_client.Connect(point);
-            }
-            catch
-            {
-                return;
-            }
-            
-
-            //创建接收服务器数据的线程
-            th_recv = new Thread(recv_data);
-            //将线程设置为随着主线程结束而结束
-            th_recv.IsBackground = true;
-            //启动监听线程
-            th_recv.Start();
+            connect_server();
         }
 
         //连接服务器
@@ -143,6 +122,22 @@ namespace qqclient
         private void recv_data()
         {
 
+        }
+
+        //发送数据给服务器
+        public static void send_data(string str_data)
+        {
+            //将字符串转为二进制 
+            byte[] byte_data = Encoding.UTF8.GetBytes(str_data);
+            //发送数据
+            try
+            {
+                s_client.Send(byte_data);
+            }
+            catch
+            {
+                return;
+            }
         }
 
         //登录按钮的处理

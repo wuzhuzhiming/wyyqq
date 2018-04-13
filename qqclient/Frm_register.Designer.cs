@@ -91,9 +91,11 @@
             // tb_account
             // 
             this.tb_account.Location = new System.Drawing.Point(202, 57);
+            this.tb_account.MaxLength = 16;
             this.tb_account.Name = "tb_account";
             this.tb_account.Size = new System.Drawing.Size(156, 21);
             this.tb_account.TabIndex = 0;
+            this.tb_account.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_account_KeyPress);
             // 
             // label3
             // 
@@ -108,10 +110,12 @@
             // tb_pass
             // 
             this.tb_pass.Location = new System.Drawing.Point(202, 99);
+            this.tb_pass.MaxLength = 16;
             this.tb_pass.Name = "tb_pass";
             this.tb_pass.PasswordChar = '*';
             this.tb_pass.Size = new System.Drawing.Size(156, 21);
             this.tb_pass.TabIndex = 1;
+            this.tb_pass.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_pass_KeyPress);
             // 
             // label4
             // 
@@ -126,6 +130,7 @@
             // tb_name
             // 
             this.tb_name.Location = new System.Drawing.Point(202, 141);
+            this.tb_name.MaxLength = 16;
             this.tb_name.Name = "tb_name";
             this.tb_name.Size = new System.Drawing.Size(156, 21);
             this.tb_name.TabIndex = 2;

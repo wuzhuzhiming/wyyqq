@@ -53,7 +53,7 @@ namespace qqserver
         }
 
         //监听客户端连接请求(线程函数)
-        public static void listen_connect()
+        public void listen_connect()
         {
             Socket s_client = null;
 
@@ -61,7 +61,16 @@ namespace qqserver
             while (true)
             {
                 //客户端连接成功，并创建一个与客户端进行通信的套接字
-                s_client = s_listen.Accept();
+                try
+                {
+                    s_client = s_listen.Accept();
+                }
+                catch
+                {
+                    return;
+                }
+
+                label3.Text = "客户端已连接！";
                 //关闭socket的优化
                 s_client.NoDelay = true;
                 //创建一个与客户端进行通信的线程
@@ -75,7 +84,7 @@ namespace qqserver
         }
 
         //接受客户端发送的数据(线程函数)
-        public static void recv_data(object s_clientparam)
+        public void recv_data(object s_clientparam)
         {
             Socket s_client = s_clientparam as Socket;
 
@@ -84,8 +93,19 @@ namespace qqserver
             {
                 //创建一块接收数据的内存
                 byte[] byte_recv = new byte[1024 * 1024];
+
                 //接收数据(接收到的数据长度为len)
-                int len = s_client.Receive(byte_recv);
+                int len = 0;
+                try
+                {
+                    len = s_client.Receive(byte_recv);
+                }
+                catch
+                {
+                    s_client.Close();
+                    break;
+                }
+
                 //将二进制数据转为字符串
                 string str_recv = Encoding.UTF8.GetString(byte_recv, 0, len);
                 //处理接收到的数据
@@ -94,7 +114,7 @@ namespace qqserver
         }
 
         //对接收到的数据，按照类型进行分发处理
-        public static void handle_data(Socket s_client, string str_recv)
+        public void handle_data(Socket s_client, string str_recv)
         {
             if (s_client == null || str_recv == null ||str_recv.Length == 0)
             {
@@ -119,25 +139,52 @@ namespace qqserver
         }
 
         //发送数据给指定客户端
-        public static void send_data(Socket s_client, string msg_data)
+        public void send_data(Socket s_client, string str_data)
         {
-
-        }
-
-        //注册
-        public static void register(Socket s_client, string[] arr_recv)
-        {
-            //账号、密码、昵称、性别、头像
-            if (arr_recv.Length < 6)
+            //将字符串转为二进制 
+            byte[] byte_data = Encoding.UTF8.GetBytes(str_data);
+            //发送数据
+            try
             {
-                string str_msg = "retcode&注册失败";
-                send_data(s_client, str_msg);
+                s_client.Send(byte_data);
+            }
+            catch
+            {
                 return;
             }
         }
 
+        //注册
+        public void register(Socket s_client, string[] arr_recv)
+        {
+            //账号、密码、昵称、性别、头像
+            if (arr_recv.Length < 6)
+            {
+                label3.Text = arr_recv[0] + arr_recv[1] + arr_recv[2];
+                string str_msg = "retcode&0&注册信息不完整";
+                send_data(s_client, str_msg);
+            }
+            else
+            {
+                //检测账号是否已经存在
+                if (!dboperate.check_account(arr_recv[1]))
+                {
+                    string str_msg = "retcode&0&账号已存在";
+                    send_data(s_client, str_msg);
+                }
+                else
+                {
+                    //保存玩家的注册信息到数据库
+                    dboperate.create_user(arr_recv);
+                    //并发送成功通知给客户端
+                    string str_msg = "retcode&1&注册成功";
+                    send_data(s_client, str_msg);
+                }
+            }
+        }
+
         //登陆
-        public static void login(Socket s_client, string[] arr_recv)
+        public void login(Socket s_client, string[] arr_recv)
         {
 
         }
