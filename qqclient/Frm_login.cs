@@ -24,13 +24,19 @@ namespace qqclient
         Thread th_recv = null;
         //是否已经连接服务器
         bool is_connect = false;
-
+        //登陆窗口线程上下文对象，用于其它线程向登陆窗口线程发送通知
+        SynchronizationContext login_th_context;
         //主窗口
         Frm_main frm_main = null;
 
         public Frm_login()
         {
             InitializeComponent();
+
+            //设置为不检测线程安全
+            CheckForIllegalCrossThreadCalls = false;
+            //创建线程上下文对象
+            login_th_context = SynchronizationContext.Current;
         }
 
         private void link_lab_register_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -80,7 +86,11 @@ namespace qqclient
         //窗口加载时的处理
         private void Frm_login_Load(object sender, EventArgs e)
         {
+            //连接服务器
             connect_server();
+            //创建主界面窗口对象
+            frm_main = new Frm_main();
+            frm_main.Owner = this;
         }
 
         //连接服务器
@@ -92,6 +102,8 @@ namespace qqclient
                 s_client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 //关闭socket的优化
                 s_client.NoDelay = true;
+                //设置为非阻塞
+                //s_client.Blocking = false;
                 //设置ip和端口
                 IPAddress addr = IPAddress.Parse("127.0.0.1");
                 IPEndPoint point = new IPEndPoint(addr, int.Parse("5000"));
@@ -121,7 +133,57 @@ namespace qqclient
         //接收服务器发送的数据(线程函数)
         private void recv_data()
         {
+            //在循环中接受客户端发送的数据
+            while (true)
+            {
+                //创建一块接收数据的内存
+                byte[] byte_recv = new byte[1024 * 1024];
 
+                //接收数据(接收到的数据长度为len)
+                int len = 0;
+                try
+                {
+                    len = s_client.Receive(byte_recv);
+                }
+                catch
+                {
+                    s_client.Close();
+                    break;
+                }
+
+                //将二进制数据转为字符串
+                string str_recv = Encoding.UTF8.GetString(byte_recv, 0, len);
+                //处理接收到的数据
+                handle_data(str_recv);
+            }
+        }
+
+        //对接收到的数据，按照类型进行分发处理
+        public void handle_data(string str_recv)
+        {
+            if (str_recv == null || str_recv.Length == 0)
+            {
+                return;
+            }
+
+            //分解接收到的数据(数据以'&'作为分隔符)
+            string[] arr_recv = str_recv.Split('&');
+            if (arr_recv.Length < 1)
+            {
+                return;
+            }
+
+            //根据数据类型进行分发处理
+            if (arr_recv[0] == "retcode")
+            {
+                //返回值与提示信息
+                MessageBox.Show(arr_recv[2]);
+            }
+            else if (arr_recv[0] == "login_rsp")
+            {
+                //登陆返回
+                login_rsp(arr_recv);
+            }
         }
 
         //发送数据给服务器
@@ -145,6 +207,72 @@ namespace qqclient
         {
             //连接服务器
             connect_server();
+
+            //获取用户输入的信息
+            string str_account = tb_account.Text;
+            string str_pass = tb_pass.Text;
+
+            //检测账号、密码是否为空
+            if (str_account.Length < 1)
+            {
+                MessageBox.Show("账号不能为空");
+                return;
+            }
+            if (str_pass.Length < 1)
+            {
+                MessageBox.Show("密码不能为空");
+                return;
+            }
+
+            //发送用户的登陆信息给服务器
+            string str_msg = "login&" + str_account + "&" + str_pass;
+            send_data(str_msg);
+        }
+
+        //登陆返回
+        public void login_rsp(string[] arr_recv)
+        {
+            //登录成功后通知登陆窗口线程
+            login_th_context.Post(new SendOrPostCallback(callback_login), arr_recv);
+        }
+
+        //登陆返回后的处理 - 线程回调
+        private void callback_login(object obj)
+        {
+            string[] arr_recv = (string[])obj;
+            frm_main.set_user_info(arr_recv);
+            frm_main.Show();
+            this.Hide();
+        }
+
+        //账号输入框，做输入限制
+        private void tb_account_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //账号只允许字母、数字、下划线
+            if ((e.KeyChar >= 'A' && e.KeyChar <= 'Z') || (e.KeyChar >= 'a' && e.KeyChar <= 'z') ||
+                (e.KeyChar >= '0' && e.KeyChar <= '9') || (e.KeyChar == '_') || (e.KeyChar == 8))
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
+        }
+
+        //密码输入框，做输入限制
+        private void tb_pass_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //密码只允许字母、数字、下划线
+            if ((e.KeyChar >= 'A' && e.KeyChar <= 'Z') || (e.KeyChar >= 'a' && e.KeyChar <= 'z') ||
+                (e.KeyChar >= '0' && e.KeyChar <= '9') || (e.KeyChar == '_') || (e.KeyChar == 8))
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
         }
     }
 }

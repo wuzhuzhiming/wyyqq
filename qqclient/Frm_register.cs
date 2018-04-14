@@ -11,6 +11,13 @@ namespace qqclient
 {
     public partial class Frm_register : Form
     {
+        //鼠标移动的位置
+        Point mouse_off;
+        //是否为左键
+        bool is_mouse_left;
+        //头像编号
+        int head_index = 8;
+
         public Frm_register()
         {
             InitializeComponent();
@@ -20,11 +27,6 @@ namespace qqclient
         {
             Close();
         }
-
-        //鼠标移动的位置
-        Point mouse_off;
-        //是否为左键
-        bool is_mouse_left;
 
         //鼠标在窗体按下
         private void Frm_register_MouseDown(object sender, MouseEventArgs e)
@@ -97,7 +99,7 @@ namespace qqclient
             {
                 str_sex = "1";
             }
-            string str_head = str_sex;  //男女各有一个默认头像
+            string str_head = head_index.ToString();
 
             //检测账号、密码、昵称的长度
             if (str_account.Length < 8)
@@ -119,6 +121,50 @@ namespace qqclient
             //发送用户的注册信息给服务器
             string str_msg = "register&" + str_account + "&" + str_pass + "&" + str_name + "&" + str_sex + "&" + str_head;
             Frm_login.send_data(str_msg);
+        }
+
+        //点击头像按钮的处理
+        private void pb_head_Click(object sender, EventArgs e)
+        {
+            Frm_head frm_head = new Frm_head();
+            frm_head.Owner = this;
+            frm_head.Show();
+        }
+
+        //选择头像之后的处理
+        public void select_head(int head)
+        {
+            head_index = head;
+
+            switch(head)
+            {
+                case 1:
+                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head1;
+                    break;
+                case 2:
+                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head2;
+                    break;
+                case 3:
+                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head3;
+                    break;
+                case 4:
+                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head4;
+                    break;
+                case 5:
+                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head5;
+                    break;
+                case 6:
+                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head6;
+                    break;
+                case 7:
+                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head7;
+                    break;
+                case 8:
+                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head8;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

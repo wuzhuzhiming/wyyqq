@@ -19,7 +19,7 @@ namespace qqserver
         //连接数据库
         public static void connect_db()
         {
-            string str_conect = "server=PC-20120726ZSPY\\SQLEXPRESS;database=db_wyyqq;uid=sa;pwd=123456";
+            string str_conect = "server=DESKTOP-H03O0EJ\\SQLEXPRESS;database=db_wyyqq;uid=sa;pwd=123456";
             db_connect = new SqlConnection(str_conect);
             db_connect.Open();
         }
@@ -33,20 +33,68 @@ namespace qqserver
 
             if (account_num > 0)
             {
-                return false;
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
 
         //创建用户数据
         public static void create_user(string[] arr_recv)
         {
-            string str_sql = "=\'" + str_account + "\'";
+            string str_sql = String.Format(@"insert into t_user(account,pass,name,sex,head) values('{0}','{1}','{2}',{3},{4})",
+                arr_recv[1], arr_recv[2], arr_recv[3], int.Parse(arr_recv[4]), int.Parse(arr_recv[5]));
             SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
             sql_cmd.ExecuteNonQuery();
+        }
+
+        //查询密码是否已经一致
+        public static bool check_pass(string str_account, string str_pass)
+        {
+            string str_sql = "select pass from t_user where account=\'" + str_account + "\'";
+            SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
+            SqlDataReader sql_result = sql_cmd.ExecuteReader();
+
+            bool check_ret = false;
+
+            if (!sql_result.Read())
+            {
+                check_ret = false;
+            }
+
+            if (sql_result["pass"].ToString() != str_pass)
+            {
+                check_ret = false;
+            }
+            else
+            {
+                check_ret = true;
+            }
+
+            sql_result.Close();
+            return check_ret;
+        }
+
+        //查询用户基本信息
+        public static Dictionary<string, string> get_user_info(string str_account)
+        {
+            string str_sql = "select * from t_user where account=\'" + str_account + "\'";
+            SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
+            SqlDataReader sql_result = sql_cmd.ExecuteReader();
+
+            Dictionary<string, string> map_result = new Dictionary<string, string>();
+            if (sql_result.Read())
+            {
+                map_result.Add("userid", sql_result["userid"].ToString());
+                map_result.Add("name", sql_result["name"].ToString());
+                map_result.Add("sex", sql_result["sex"].ToString());
+                map_result.Add("head", sql_result["head"].ToString());
+            }
+
+            sql_result.Close();
+            return map_result;
         }
     }
 }

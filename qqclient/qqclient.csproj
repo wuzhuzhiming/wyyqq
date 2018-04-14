@@ -43,6 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Frm_head.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm_head.Designer.cs">
+      <DependentUpon>Frm_head.cs</DependentUpon>
+    </Compile>
     <Compile Include="Frm_login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -63,6 +69,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Frm_head.resx">
+      <DependentUpon>Frm_head.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Frm_login.resx">
       <DependentUpon>Frm_login.cs</DependentUpon>
     </EmbeddedResource>
@@ -96,7 +105,17 @@
     <None Include="resources\bt_login_bk.jpg" />
     <None Include="resources\bt_close.jpg" />
     <None Include="resources\bt_min.jpg" />
+    <None Include="resources\bt_menu.jpg" />
+    <Content Include="resources\head\head1.jpg" />
+    <Content Include="resources\head\head2.jpg" />
+    <Content Include="resources\head\head3.jpg" />
+    <Content Include="resources\head\head4.jpg" />
+    <Content Include="resources\head\head5.jpg" />
+    <Content Include="resources\head\head6.jpg" />
+    <Content Include="resources\head\head7.jpg" />
+    <Content Include="resources\head\head8.jpg" />
     <Content Include="resources\login_bk.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

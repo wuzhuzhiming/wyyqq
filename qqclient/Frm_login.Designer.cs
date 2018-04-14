@@ -43,10 +43,10 @@
             this.bt_login.FlatAppearance.BorderColor = System.Drawing.Color.Aqua;
             this.bt_login.FlatAppearance.BorderSize = 0;
             this.bt_login.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.bt_login.Location = new System.Drawing.Point(165, 203);
-            this.bt_login.Margin = new System.Windows.Forms.Padding(2);
+            this.bt_login.Location = new System.Drawing.Point(220, 254);
+            this.bt_login.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.bt_login.Name = "bt_login";
-            this.bt_login.Size = new System.Drawing.Size(133, 34);
+            this.bt_login.Size = new System.Drawing.Size(177, 42);
             this.bt_login.TabIndex = 2;
             this.bt_login.Text = "登录";
             this.bt_login.UseVisualStyleBackColor = true;
@@ -54,20 +54,20 @@
             // 
             // tb_account
             // 
-            this.tb_account.Location = new System.Drawing.Point(165, 102);
-            this.tb_account.Margin = new System.Windows.Forms.Padding(2);
+            this.tb_account.Location = new System.Drawing.Point(220, 128);
+            this.tb_account.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tb_account.Name = "tb_account";
-            this.tb_account.Size = new System.Drawing.Size(156, 21);
+            this.tb_account.Size = new System.Drawing.Size(207, 25);
             this.tb_account.TabIndex = 0;
+            this.tb_account.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_account_KeyPress);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Location = new System.Drawing.Point(122, 105);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(163, 131);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 12);
+            this.label1.Size = new System.Drawing.Size(52, 15);
             this.label1.TabIndex = 2;
             this.label1.Text = "账号：";
             // 
@@ -75,29 +75,28 @@
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Location = new System.Drawing.Point(122, 153);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(163, 191);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 12);
+            this.label2.Size = new System.Drawing.Size(52, 15);
             this.label2.TabIndex = 3;
             this.label2.Text = "密码：";
             // 
             // tb_pass
             // 
-            this.tb_pass.Location = new System.Drawing.Point(165, 150);
-            this.tb_pass.Margin = new System.Windows.Forms.Padding(2);
+            this.tb_pass.Location = new System.Drawing.Point(220, 188);
+            this.tb_pass.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tb_pass.Name = "tb_pass";
             this.tb_pass.PasswordChar = '*';
-            this.tb_pass.Size = new System.Drawing.Size(156, 21);
+            this.tb_pass.Size = new System.Drawing.Size(207, 25);
             this.tb_pass.TabIndex = 1;
+            this.tb_pass.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_pass_KeyPress);
             // 
             // link_lab_register
             // 
             this.link_lab_register.AutoSize = true;
-            this.link_lab_register.Location = new System.Drawing.Point(317, 214);
-            this.link_lab_register.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.link_lab_register.Location = new System.Drawing.Point(423, 268);
             this.link_lab_register.Name = "link_lab_register";
-            this.link_lab_register.Size = new System.Drawing.Size(29, 12);
+            this.link_lab_register.Size = new System.Drawing.Size(37, 15);
             this.link_lab_register.TabIndex = 3;
             this.link_lab_register.TabStop = true;
             this.link_lab_register.Text = "注册";
@@ -106,9 +105,11 @@
             // bt_close
             // 
             this.bt_close.BackgroundImage = global::qqclient.Properties.Resources.bt_close;
+            this.bt_close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.bt_close.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.bt_close.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.bt_close.Location = new System.Drawing.Point(419, 3);
+            this.bt_close.Location = new System.Drawing.Point(568, 3);
+            this.bt_close.Margin = new System.Windows.Forms.Padding(4);
             this.bt_close.Name = "bt_close";
             this.bt_close.Size = new System.Drawing.Size(28, 29);
             this.bt_close.TabIndex = 4;
@@ -117,10 +118,10 @@
             // 
             // Frm_login
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::qqclient.Properties.Resources.login_bk;
-            this.ClientSize = new System.Drawing.Size(450, 320);
+            this.ClientSize = new System.Drawing.Size(600, 400);
             this.Controls.Add(this.bt_close);
             this.Controls.Add(this.link_lab_register);
             this.Controls.Add(this.tb_pass);
@@ -130,7 +131,7 @@
             this.Controls.Add(this.bt_login);
             this.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Frm_login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "登录";

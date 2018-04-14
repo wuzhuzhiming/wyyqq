@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using System.Data.SqlClient;
 
 namespace qqserver
 {
@@ -70,7 +71,7 @@ namespace qqserver
                     return;
                 }
 
-                label3.Text = "客户端已连接！";
+                //label3.Text = "客户端已连接！";
                 //关闭socket的优化
                 s_client.NoDelay = true;
                 //创建一个与客户端进行通信的线程
@@ -121,7 +122,7 @@ namespace qqserver
                 return;
             }
 
-            //分解接收到的数据(数据已'&'作为分隔符)
+            //分解接收到的数据(数据以'&'作为分隔符)
             string[] arr_recv = str_recv.Split('&');
             if (arr_recv.Length < 1)
             {
@@ -160,14 +161,14 @@ namespace qqserver
             //账号、密码、昵称、性别、头像
             if (arr_recv.Length < 6)
             {
-                label3.Text = arr_recv[0] + arr_recv[1] + arr_recv[2];
+                //label3.Text = arr_recv[0] + arr_recv[1] + arr_recv[2];
                 string str_msg = "retcode&0&注册信息不完整";
                 send_data(s_client, str_msg);
             }
             else
             {
                 //检测账号是否已经存在
-                if (!dboperate.check_account(arr_recv[1]))
+                if (dboperate.check_account(arr_recv[1]))
                 {
                     string str_msg = "retcode&0&账号已存在";
                     send_data(s_client, str_msg);
@@ -186,7 +187,47 @@ namespace qqserver
         //登陆
         public void login(Socket s_client, string[] arr_recv)
         {
+            //账号、密码
+            if (arr_recv.Length < 2)
+            {
+                string str_msg = "retcode&0&登陆信息不完整";
+                send_data(s_client, str_msg);
+            }
+            else
+            {
+                //检测账号是否存在
+                if (!dboperate.check_account(arr_recv[1]))
+                {
+                    string str_msg = "retcode&0&账号不存在";
+                    send_data(s_client, str_msg);
+                    return;
+                }
 
+                //检测密码是否正确
+                if (!dboperate.check_pass(arr_recv[1], arr_recv[2]))
+                {
+                    string str_msg = "retcode&0&密码错误";
+                    send_data(s_client, str_msg);
+                    return;
+                }
+
+                //账号、密码检测通过后，从数据库中获取用户的基本信息
+                Dictionary<string, string> map_result = dboperate.get_user_info(arr_recv[1]);
+                if (!map_result.ContainsKey("userid") || !map_result.ContainsKey("name") ||
+                    !map_result.ContainsKey("sex") || !map_result.ContainsKey("head"))
+                {
+                    string str_msg = "retcode&0&获取用户数据失败";
+                    send_data(s_client, str_msg);
+                }
+                else
+                {
+                    //返回用户信息给客户端
+                    string str_msg = String.Format(@"login_rsp&{0}&{1}&{2}&{3}&{4}",
+                        arr_recv[1], map_result["userid"].ToString(), map_result["name"].ToString(), 
+                        map_result["sex"].ToString(), map_result["head"].ToString());
+                    send_data(s_client, str_msg);
+                }
+            }
         }
     }
 }
