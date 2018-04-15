@@ -106,6 +106,8 @@
     <None Include="resources\bt_close.jpg" />
     <None Include="resources\bt_min.jpg" />
     <None Include="resources\bt_menu.jpg" />
+    <None Include="resources\bt_add_friend.jpg" />
+    <None Include="resources\bt_add_group.jpg" />
     <Content Include="resources\head\head1.jpg" />
     <Content Include="resources\head\head2.jpg" />
     <Content Include="resources\head\head3.jpg" />

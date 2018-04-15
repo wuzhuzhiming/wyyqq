@@ -63,6 +63,26 @@ namespace qqclient.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap bt_add_friend {
+            get {
+                object obj = ResourceManager.GetObject("bt_add_friend", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap bt_add_group {
+            get {
+                object obj = ResourceManager.GetObject("bt_add_group", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap bt_close {
             get {
                 object obj = ResourceManager.GetObject("bt_close", resourceCulture);

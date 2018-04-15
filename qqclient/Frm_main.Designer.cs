@@ -37,7 +37,8 @@
             this.tc_friend = new System.Windows.Forms.TabControl();
             this.tp_friend = new System.Windows.Forms.TabPage();
             this.tp_group = new System.Windows.Forms.TabPage();
-            this.bt_menu = new System.Windows.Forms.Button();
+            this.bt_add_friend = new System.Windows.Forms.Button();
+            this.bt_add_group = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pb_head)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tc_friend.SuspendLayout();
@@ -142,19 +143,33 @@
             this.tp_group.TabIndex = 1;
             this.tp_group.Text = "群                ";
             // 
-            // bt_menu
+            // bt_add_friend
             // 
-            this.bt_menu.BackgroundImage = global::qqclient.Properties.Resources.bt_menu;
-            this.bt_menu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.bt_menu.FlatAppearance.BorderSize = 0;
-            this.bt_menu.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.bt_menu.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.bt_menu.Location = new System.Drawing.Point(12, 754);
-            this.bt_menu.Margin = new System.Windows.Forms.Padding(4);
-            this.bt_menu.Name = "bt_menu";
-            this.bt_menu.Size = new System.Drawing.Size(28, 29);
-            this.bt_menu.TabIndex = 14;
-            this.bt_menu.UseVisualStyleBackColor = true;
+            this.bt_add_friend.BackgroundImage = global::qqclient.Properties.Resources.bt_add_friend;
+            this.bt_add_friend.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.bt_add_friend.FlatAppearance.BorderSize = 0;
+            this.bt_add_friend.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bt_add_friend.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.bt_add_friend.Location = new System.Drawing.Point(16, 754);
+            this.bt_add_friend.Margin = new System.Windows.Forms.Padding(4);
+            this.bt_add_friend.Name = "bt_add_friend";
+            this.bt_add_friend.Size = new System.Drawing.Size(28, 29);
+            this.bt_add_friend.TabIndex = 15;
+            this.bt_add_friend.UseVisualStyleBackColor = true;
+            // 
+            // bt_add_group
+            // 
+            this.bt_add_group.BackgroundImage = global::qqclient.Properties.Resources.bt_add_group;
+            this.bt_add_group.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.bt_add_group.FlatAppearance.BorderSize = 0;
+            this.bt_add_group.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bt_add_group.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.bt_add_group.Location = new System.Drawing.Point(52, 754);
+            this.bt_add_group.Margin = new System.Windows.Forms.Padding(4);
+            this.bt_add_group.Name = "bt_add_group";
+            this.bt_add_group.Size = new System.Drawing.Size(28, 29);
+            this.bt_add_group.TabIndex = 16;
+            this.bt_add_group.UseVisualStyleBackColor = true;
             // 
             // Frm_main
             // 
@@ -162,7 +177,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::qqclient.Properties.Resources.login_bk;
             this.ClientSize = new System.Drawing.Size(360, 793);
-            this.Controls.Add(this.bt_menu);
+            this.Controls.Add(this.bt_add_group);
+            this.Controls.Add(this.bt_add_friend);
             this.Controls.Add(this.tc_friend);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lb_userid);
@@ -198,6 +214,7 @@
         private System.Windows.Forms.TabControl tc_friend;
         private System.Windows.Forms.TabPage tp_friend;
         private System.Windows.Forms.TabPage tp_group;
-        private System.Windows.Forms.Button bt_menu;
+        private System.Windows.Forms.Button bt_add_friend;
+        private System.Windows.Forms.Button bt_add_group;
     }
 }
