@@ -130,12 +130,15 @@ namespace qqserver
             }
 
             //根据数据类型进行分发处理
-            if(arr_recv[0] == "register"){
+            if (arr_recv[0] == "register"){
                 //注册
                 register(s_client, arr_recv);
             }else if (arr_recv[0] == "login"){
                 //登陆
                 login(s_client, arr_recv);
+            }else if (arr_recv[0] == "finduser"){
+                //查找用户
+                find_user(s_client, arr_recv);
             }
         }
 
@@ -188,7 +191,7 @@ namespace qqserver
         public void login(Socket s_client, string[] arr_recv)
         {
             //账号、密码
-            if (arr_recv.Length < 2)
+            if (arr_recv.Length < 3)
             {
                 string str_msg = "retcode&0&登陆信息不完整";
                 send_data(s_client, str_msg);
@@ -226,6 +229,58 @@ namespace qqserver
                         arr_recv[1], map_result["userid"].ToString(), map_result["name"].ToString(), 
                         map_result["sex"].ToString(), map_result["head"].ToString());
                     send_data(s_client, str_msg);
+                }
+            }
+        }
+
+        //查找用户
+        public void find_user(Socket s_client, string[] arr_recv)
+        {
+            if (arr_recv.Length < 2)
+            {
+                string str_msg = "retcode&0&缺少参数无法查找用户";
+                send_data(s_client, str_msg);
+            }
+            else
+            {
+                int userid = 0;
+                if (int.TryParse(arr_recv[1], out userid))
+                {
+                    //如果参数是数字，则通过userid查找
+                    Dictionary<string, string> map_result = dboperate.get_user_info_from_userid(userid);
+                    if (!map_result.ContainsKey("userid") || !map_result.ContainsKey("name") ||
+                    !map_result.ContainsKey("sex") || !map_result.ContainsKey("head"))
+                    {
+                        string str_msg = "finduser_rsp&retcode&0";
+                        send_data(s_client, str_msg);
+                    }
+                    else
+                    {
+                        //返回用户信息给客户端
+                        string str_msg = String.Format(@"finduser_rsp&{0}&{1}&{2}&{3}&{4}",
+                            map_result["account"].ToString(), map_result["userid"].ToString(), map_result["name"].ToString(),
+                            map_result["sex"].ToString(), map_result["head"].ToString());
+                        send_data(s_client, str_msg);
+                    }
+                }
+                else
+                {
+                    //如果参数不是数字，则通过用户账号查找
+                    Dictionary<string, string> map_result = dboperate.get_user_info(arr_recv[1]);
+                    if (!map_result.ContainsKey("userid") || !map_result.ContainsKey("name") ||
+                    !map_result.ContainsKey("sex") || !map_result.ContainsKey("head"))
+                    {
+                        string str_msg = "finduser_rsp&retcode&0";
+                        send_data(s_client, str_msg);
+                    }
+                    else
+                    {
+                        //返回用户信息给客户端
+                        string str_msg = String.Format(@"finduser_rsp&{0}&{1}&{2}&{3}&{4}",
+                            map_result["account"].ToString(), map_result["userid"].ToString(), map_result["name"].ToString(),
+                            map_result["sex"].ToString(), map_result["head"].ToString());
+                        send_data(s_client, str_msg);
+                    }
                 }
             }
         }

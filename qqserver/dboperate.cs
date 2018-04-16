@@ -77,7 +77,7 @@ namespace qqserver
             return check_ret;
         }
 
-        //查询用户基本信息
+        //通过账号查询用户基本信息
         public static Dictionary<string, string> get_user_info(string str_account)
         {
             string str_sql = "select * from t_user where account=\'" + str_account + "\'";
@@ -87,6 +87,28 @@ namespace qqserver
             Dictionary<string, string> map_result = new Dictionary<string, string>();
             if (sql_result.Read())
             {
+                map_result.Add("account", sql_result["account"].ToString());
+                map_result.Add("userid", sql_result["userid"].ToString());
+                map_result.Add("name", sql_result["name"].ToString());
+                map_result.Add("sex", sql_result["sex"].ToString());
+                map_result.Add("head", sql_result["head"].ToString());
+            }
+
+            sql_result.Close();
+            return map_result;
+        }
+
+        //通过userid查询用户基本信息
+        public static Dictionary<string, string> get_user_info_from_userid(int userid)
+        {
+            string str_sql = String.Format("select * from t_user where userid={0}", userid);
+            SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
+            SqlDataReader sql_result = sql_cmd.ExecuteReader();
+
+            Dictionary<string, string> map_result = new Dictionary<string, string>();
+            if (sql_result.Read())
+            {
+                map_result.Add("account", sql_result["account"].ToString());
                 map_result.Add("userid", sql_result["userid"].ToString());
                 map_result.Add("name", sql_result["name"].ToString());
                 map_result.Add("sex", sql_result["sex"].ToString());

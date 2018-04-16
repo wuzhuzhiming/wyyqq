@@ -107,8 +107,8 @@ namespace qqclient
         private void bt_add_friend_Click(object sender, EventArgs e)
         {
             //弹出添加好友窗口
-            Frm_add_friend frm_add_friend = new Frm_add_friend();
-            frm_add_friend.Show();
+            Frm_login frm_login = (Frm_login)(this.Owner);
+            frm_login.frm_add_friend.Show();
         }
     }
 }

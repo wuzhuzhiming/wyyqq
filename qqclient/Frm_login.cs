@@ -28,6 +28,8 @@ namespace qqclient
         SynchronizationContext login_th_context;
         //主窗口
         Frm_main frm_main = null;
+        //添加好友窗口
+        public Frm_add_friend frm_add_friend = null;
 
         public Frm_login()
         {
@@ -91,6 +93,9 @@ namespace qqclient
             //创建主界面窗口对象
             frm_main = new Frm_main();
             frm_main.Owner = this;
+            //创建添加好友窗口对象
+            frm_add_friend = new Frm_add_friend();
+            frm_add_friend.Owner = this;
         }
 
         //连接服务器
@@ -184,6 +189,11 @@ namespace qqclient
                 //登陆返回
                 login_rsp(arr_recv);
             }
+            else if (arr_recv[0] == "finduser_rsp")
+            {
+                //查找用户返回
+                finduser_rsp(arr_recv);
+            }
         }
 
         //发送数据给服务器
@@ -242,6 +252,22 @@ namespace qqclient
             string[] arr_recv = (string[])obj;
             frm_main.set_user_info(arr_recv);
             frm_main.Show();
+            this.Hide();
+        }
+
+        //查找用户返回
+        public void finduser_rsp(string[] arr_recv)
+        {
+            //查找用户后通知登陆窗口线程
+            login_th_context.Post(new SendOrPostCallback(callback_finduser), arr_recv);
+        }
+
+        //查找用户返回后的处理 - 线程回调
+        private void callback_finduser(object obj)
+        {
+            string[] arr_recv = (string[])obj;
+            frm_add_friend.set_user_info(arr_recv);
+            //frm_add_friend.Show();
             this.Hide();
         }
 

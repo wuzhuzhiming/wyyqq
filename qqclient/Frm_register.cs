@@ -88,6 +88,7 @@ namespace qqclient
             }
         }
 
+        //注册按钮点击处理
         private void bt_register_Click(object sender, EventArgs e)
         {
             //获取用户输入的信息

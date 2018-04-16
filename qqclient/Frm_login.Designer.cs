@@ -56,6 +56,7 @@
             // 
             this.tb_account.Location = new System.Drawing.Point(220, 128);
             this.tb_account.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tb_account.MaxLength = 16;
             this.tb_account.Name = "tb_account";
             this.tb_account.Size = new System.Drawing.Size(207, 25);
             this.tb_account.TabIndex = 0;
@@ -85,6 +86,7 @@
             // 
             this.tb_pass.Location = new System.Drawing.Point(220, 188);
             this.tb_pass.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tb_pass.MaxLength = 16;
             this.tb_pass.Name = "tb_pass";
             this.tb_pass.PasswordChar = '*';
             this.tb_pass.Size = new System.Drawing.Size(207, 25);
