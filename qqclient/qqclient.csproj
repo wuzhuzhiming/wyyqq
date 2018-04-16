@@ -43,6 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Frm_add_friend.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm_add_friend.Designer.cs">
+      <DependentUpon>Frm_add_friend.cs</DependentUpon>
+    </Compile>
     <Compile Include="Frm_head.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,6 +75,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Frm_add_friend.resx">
+      <DependentUpon>Frm_add_friend.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Frm_head.resx">
       <DependentUpon>Frm_head.cs</DependentUpon>
     </EmbeddedResource>
@@ -108,6 +117,7 @@
     <None Include="resources\bt_menu.jpg" />
     <None Include="resources\bt_add_friend.jpg" />
     <None Include="resources\bt_add_group.jpg" />
+    <None Include="resources\bt_news.jpg" />
     <Content Include="resources\head\head1.jpg" />
     <Content Include="resources\head\head2.jpg" />
     <Content Include="resources\head\head3.jpg" />

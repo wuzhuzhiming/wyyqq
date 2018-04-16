@@ -123,6 +123,16 @@ namespace qqclient.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap bt_news {
+            get {
+                object obj = ResourceManager.GetObject("bt_news", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap head1 {
             get {
                 object obj = ResourceManager.GetObject("head1", resourceCulture);
