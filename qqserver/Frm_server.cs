@@ -19,6 +19,16 @@ namespace qqserver
         public static Socket s_listen = null;
         //监听线程
         Thread th_listen = null;
+        //在线用户列表 <userid, 客户端socket>
+        Dictionary<int, Socket> online_players = new Dictionary<int, Socket>();
+        Dictionary<Socket, int> online_sockets = new Dictionary<Socket, int>();
+
+        //消息类型
+        enum NEWS_TYPE
+        {
+            APPLY_FRIEND = 1,       //申请好友
+            APPLY_GROUP = 2,        //申请加群
+        }
 
         public Frm_server()
         {
@@ -139,6 +149,10 @@ namespace qqserver
             }else if (arr_recv[0] == "finduser"){
                 //查找用户
                 find_user(s_client, arr_recv);
+            }else if (arr_recv[0] == "addfriend")
+            {
+                //添加好友
+                add_friend(s_client, arr_recv);
             }
         }
 
@@ -155,6 +169,19 @@ namespace qqserver
             catch
             {
                 return;
+            }
+        }
+
+        //由在线玩家的socket获取userid
+        private int get_online_userid(Socket s_client)
+        {
+            if (online_sockets.ContainsKey(s_client))
+            {
+                return online_sockets[s_client];
+            }
+            else
+            {
+                return 0;
             }
         }
 
@@ -224,6 +251,9 @@ namespace qqserver
                 }
                 else
                 {
+                    //添加到在线列表
+                    online_players.Add(int.Parse(map_result["userid"]), s_client);
+                    online_sockets.Add(s_client, int.Parse(map_result["userid"]));
                     //返回用户信息给客户端
                     string str_msg = String.Format(@"login_rsp&{0}&{1}&{2}&{3}&{4}",
                         arr_recv[1], map_result["userid"].ToString(), map_result["name"].ToString(), 
@@ -279,6 +309,41 @@ namespace qqserver
                         string str_msg = String.Format(@"finduser_rsp&{0}&{1}&{2}&{3}&{4}",
                             map_result["account"].ToString(), map_result["userid"].ToString(), map_result["name"].ToString(),
                             map_result["sex"].ToString(), map_result["head"].ToString());
+                        send_data(s_client, str_msg);
+                    }
+                }
+            }
+        }
+
+        //添加好友
+        public void add_friend(Socket s_client, string[] arr_recv)
+        {
+            if (arr_recv.Length < 2)
+            {
+                string str_msg = "retcode&0&添加好友失败";
+                send_data(s_client, str_msg);
+            }
+            else
+            {
+                int self_userid = get_online_userid(s_client);
+                int with_userid = int.Parse(arr_recv[1]);
+
+                if (self_userid != with_userid)
+                {
+                    Dictionary<string, string> map_result = dboperate.get_user_info_from_userid(with_userid);
+                    if (!map_result.ContainsKey("userid") || !map_result.ContainsKey("name") ||
+                    !map_result.ContainsKey("sex") || !map_result.ContainsKey("head"))
+                    {
+                        string str_msg = "retcode&0&添加好友失败";
+                        send_data(s_client, str_msg);
+                    }
+                    else
+                    {
+                        //添加好友申请给目标用户
+
+                        dboperate.create_news(with_userid, (int)NEWS_TYPE.APPLY_FRIEND, self_userid, 0);
+                        //返回用户信息给客户端
+                        string str_msg = "retcode&1&添加成功，等待对方处理";
                         send_data(s_client, str_msg);
                     }
                 }

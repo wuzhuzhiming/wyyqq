@@ -27,9 +27,11 @@ namespace qqclient
         //登陆窗口线程上下文对象，用于其它线程向登陆窗口线程发送通知
         SynchronizationContext login_th_context;
         //主窗口
-        Frm_main frm_main = null;
+        public Frm_main frm_main = null;
         //添加好友窗口
         public Frm_add_friend frm_add_friend = null;
+        //加群窗口
+        public Frm_add_group frm_add_group = null;
 
         public Frm_login()
         {
@@ -96,6 +98,9 @@ namespace qqclient
             //创建添加好友窗口对象
             frm_add_friend = new Frm_add_friend();
             frm_add_friend.Owner = this;
+            //创建加群窗口对象
+            frm_add_group = new Frm_add_group();
+            frm_add_group.Owner = this;
         }
 
         //连接服务器
@@ -179,20 +184,18 @@ namespace qqclient
             }
 
             //根据数据类型进行分发处理
-            if (arr_recv[0] == "retcode")
-            {
+            if (arr_recv[0] == "retcode"){
                 //返回值与提示信息
                 MessageBox.Show(arr_recv[2]);
-            }
-            else if (arr_recv[0] == "login_rsp")
-            {
+            }else if (arr_recv[0] == "login_rsp"){
                 //登陆返回
                 login_rsp(arr_recv);
-            }
-            else if (arr_recv[0] == "finduser_rsp")
-            {
+            }else if (arr_recv[0] == "finduser_rsp"){
                 //查找用户返回
                 finduser_rsp(arr_recv);
+            }else if (arr_recv[0] == "findgroup_rsp"){
+                //查找群返回
+                findgroup_rsp(arr_recv);
             }
         }
 
@@ -267,8 +270,20 @@ namespace qqclient
         {
             string[] arr_recv = (string[])obj;
             frm_add_friend.set_user_info(arr_recv);
-            //frm_add_friend.Show();
-            this.Hide();
+        }
+
+        //查找群返回
+        public void findgroup_rsp(string[] arr_recv)
+        {
+            //查找群后通知登陆窗口线程
+            login_th_context.Post(new SendOrPostCallback(callback_finduser), arr_recv);
+        }
+
+        //查找群返回后的处理 - 线程回调
+        private void callback_findgroup(object obj)
+        {
+            string[] arr_recv = (string[])obj;
+            frm_add_group.set_group_info(arr_recv);
         }
 
         //账号输入框，做输入限制

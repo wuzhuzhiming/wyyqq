@@ -15,6 +15,8 @@ namespace qqclient
         Point mouse_off;
         //是否为左键
         bool is_mouse_left = false;
+        //当前用户的userid
+        public int cur_userid = 0;
 
         public Frm_main()
         {
@@ -65,6 +67,7 @@ namespace qqclient
         {
             lb_name.Text = arr_user_info[3];
             lb_userid.Text = arr_user_info[2];
+            cur_userid = int.Parse(arr_user_info[2]);
 
             int head_index = int.Parse(arr_user_info[5]);
             switch(head_index)
@@ -109,6 +112,11 @@ namespace qqclient
             //弹出添加好友窗口
             Frm_login frm_login = (Frm_login)(this.Owner);
             frm_login.frm_add_friend.Show();
+        }
+
+        private void bt_add_group_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

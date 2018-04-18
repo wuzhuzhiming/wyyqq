@@ -49,6 +49,12 @@
     <Compile Include="Frm_add_friend.Designer.cs">
       <DependentUpon>Frm_add_friend.cs</DependentUpon>
     </Compile>
+    <Compile Include="Frm_add_group.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm_add_group.Designer.cs">
+      <DependentUpon>Frm_add_group.cs</DependentUpon>
+    </Compile>
     <Compile Include="Frm_head.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,6 +83,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Frm_add_friend.resx">
       <DependentUpon>Frm_add_friend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frm_add_group.resx">
+      <DependentUpon>Frm_add_group.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Frm_head.resx">
       <DependentUpon>Frm_head.cs</DependentUpon>

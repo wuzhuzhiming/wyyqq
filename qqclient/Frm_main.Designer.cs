@@ -175,6 +175,7 @@
             this.bt_add_group.Size = new System.Drawing.Size(21, 23);
             this.bt_add_group.TabIndex = 16;
             this.bt_add_group.UseVisualStyleBackColor = true;
+            this.bt_add_group.Click += new System.EventHandler(this.bt_add_group_Click);
             // 
             // bt_news
             // 

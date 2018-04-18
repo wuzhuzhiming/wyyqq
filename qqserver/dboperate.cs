@@ -19,7 +19,7 @@ namespace qqserver
         //连接数据库
         public static void connect_db()
         {
-            string str_conect = "server=DESKTOP-H03O0EJ\\SQLEXPRESS;database=db_wyyqq;uid=sa;pwd=123456";
+            string str_conect = "server=PC-20120726ZSPY\\SQLEXPRESS;database=db_wyyqq;uid=sa;pwd=123456";
             db_connect = new SqlConnection(str_conect);
             db_connect.Open();
         }
@@ -117,6 +117,16 @@ namespace qqserver
 
             sql_result.Close();
             return map_result;
+        }
+
+        //创建一条新消息
+        public static void create_news(int userid, int news_type, int with_userid, int with_groupid)
+        {
+            string str_sql = String.Format(@"insert into t_news(userid,news_type,with_userid,with_groupid) 
+                values({0},{1},{2},{3})",
+                userid, news_type, with_userid, with_groupid);
+            SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
+            sql_cmd.ExecuteNonQuery();
         }
     }
 }
