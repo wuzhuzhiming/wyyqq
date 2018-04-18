@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_login));
             this.bt_login = new System.Windows.Forms.Button();
             this.tb_account = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -35,6 +37,7 @@
             this.tb_pass = new System.Windows.Forms.TextBox();
             this.link_lab_register = new System.Windows.Forms.LinkLabel();
             this.bt_close = new System.Windows.Forms.Button();
+            this.imglisthead = new System.Windows.Forms.ImageList(this.components);
             this.SuspendLayout();
             // 
             // bt_login
@@ -118,6 +121,19 @@
             this.bt_close.UseVisualStyleBackColor = true;
             this.bt_close.Click += new System.EventHandler(this.bt_close_Click);
             // 
+            // imglisthead
+            // 
+            this.imglisthead.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imglisthead.ImageStream")));
+            this.imglisthead.TransparentColor = System.Drawing.Color.Transparent;
+            this.imglisthead.Images.SetKeyName(0, "head1.jpg");
+            this.imglisthead.Images.SetKeyName(1, "head2.jpg");
+            this.imglisthead.Images.SetKeyName(2, "head3.jpg");
+            this.imglisthead.Images.SetKeyName(3, "head4.jpg");
+            this.imglisthead.Images.SetKeyName(4, "head5.jpg");
+            this.imglisthead.Images.SetKeyName(5, "head6.jpg");
+            this.imglisthead.Images.SetKeyName(6, "head7.jpg");
+            this.imglisthead.Images.SetKeyName(7, "head8.jpg");
+            // 
             // Frm_login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -155,6 +171,7 @@
         private System.Windows.Forms.TextBox tb_pass;
         private System.Windows.Forms.LinkLabel link_lab_register;
         private System.Windows.Forms.Button bt_close;
+        private System.Windows.Forms.ImageList imglisthead;
     }
 }
 

@@ -128,5 +128,7 @@ namespace qqserver
             SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
             sql_cmd.ExecuteNonQuery();
         }
+
+        //获取消息列表
     }
 }

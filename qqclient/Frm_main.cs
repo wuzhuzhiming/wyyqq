@@ -70,36 +70,8 @@ namespace qqclient
             cur_userid = int.Parse(arr_user_info[2]);
 
             int head_index = int.Parse(arr_user_info[5]);
-            switch(head_index)
-            {
-                case 1:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head1;
-                    break;
-                case 2:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head2;
-                    break;
-                case 3:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head3;
-                    break;
-                case 4:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head4;
-                    break;
-                case 5:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head5;
-                    break;
-                case 6:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head6;
-                    break;
-                case 7:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head7;
-                    break;
-                case 8:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head8;
-                    break;
-                default:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head8;
-                    break;
-            }
+            Frm_login frm_login = (Frm_login)(this.Owner);
+            pb_head.BackgroundImage = frm_login.get_imglisthead().Images[head_index - 1];
         }
 
         private void Frm_main_Load(object sender, EventArgs e)
@@ -117,6 +89,13 @@ namespace qqclient
         private void bt_add_group_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void bt_news_Click(object sender, EventArgs e)
+        {
+            //发送请求消息列表的请求
+            string str_msg = "getnews";
+            Frm_login.send_data(str_msg);
         }
     }
 }

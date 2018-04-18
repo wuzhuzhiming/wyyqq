@@ -49,6 +49,7 @@ namespace qqclient
             connect_server();
             //显示注册窗口
             Frm_register frm_register = new Frm_register();
+            frm_register.Owner = this;
             frm_register.Show();
         }
 
@@ -85,6 +86,12 @@ namespace qqclient
             {
                 is_mouse_left = false;
             }
+        }
+
+        //获取头像图片列表
+        public System.Windows.Forms.ImageList get_imglisthead()
+        {
+            return imglisthead;
         }
 
         //窗口加载时的处理

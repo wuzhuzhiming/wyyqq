@@ -149,10 +149,12 @@ namespace qqserver
             }else if (arr_recv[0] == "finduser"){
                 //查找用户
                 find_user(s_client, arr_recv);
-            }else if (arr_recv[0] == "addfriend")
-            {
+            }else if (arr_recv[0] == "addfriend"){
                 //添加好友
                 add_friend(s_client, arr_recv);
+            }else if (arr_recv[0] == "getnews"){
+                //获取消息列表
+                get_news(s_client, arr_recv);
             }
         }
 
@@ -340,7 +342,6 @@ namespace qqserver
                     else
                     {
                         //添加好友申请给目标用户
-
                         dboperate.create_news(with_userid, (int)NEWS_TYPE.APPLY_FRIEND, self_userid, 0);
                         //返回用户信息给客户端
                         string str_msg = "retcode&1&添加成功，等待对方处理";
@@ -348,6 +349,12 @@ namespace qqserver
                     }
                 }
             }
+        }
+
+        //获取消息列表
+        public void get_news(Socket s_client, string[] arr_recv)
+        {
+            int self_userid = get_online_userid(s_client);
         }
     }
 }

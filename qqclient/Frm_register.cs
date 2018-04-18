@@ -136,36 +136,14 @@ namespace qqclient
         public void select_head(int head)
         {
             head_index = head;
+            Frm_login frm_login = (Frm_login)(this.Owner);
+            pb_head.BackgroundImage = frm_login.get_imglisthead().Images[head - 1];
+        }
 
-            switch(head)
-            {
-                case 1:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head1;
-                    break;
-                case 2:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head2;
-                    break;
-                case 3:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head3;
-                    break;
-                case 4:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head4;
-                    break;
-                case 5:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head5;
-                    break;
-                case 6:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head6;
-                    break;
-                case 7:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head7;
-                    break;
-                case 8:
-                    pb_head.BackgroundImage = global::qqclient.Properties.Resources.head8;
-                    break;
-                default:
-                    break;
-            }
+        private void Frm_register_Load(object sender, EventArgs e)
+        {
+            Frm_login frm_login = (Frm_login)(this.Owner);
+            pb_head.BackgroundImage = frm_login.get_imglisthead().Images[0];
         }
     }
 }

@@ -101,36 +101,8 @@ namespace qqclient
                 lb_userid.Text = arr_user_info[2];
 
                 int head_index = int.Parse(arr_user_info[5]);
-                switch (head_index)
-                {
-                    case 1:
-                        pb_head.BackgroundImage = global::qqclient.Properties.Resources.head1;
-                        break;
-                    case 2:
-                        pb_head.BackgroundImage = global::qqclient.Properties.Resources.head2;
-                        break;
-                    case 3:
-                        pb_head.BackgroundImage = global::qqclient.Properties.Resources.head3;
-                        break;
-                    case 4:
-                        pb_head.BackgroundImage = global::qqclient.Properties.Resources.head4;
-                        break;
-                    case 5:
-                        pb_head.BackgroundImage = global::qqclient.Properties.Resources.head5;
-                        break;
-                    case 6:
-                        pb_head.BackgroundImage = global::qqclient.Properties.Resources.head6;
-                        break;
-                    case 7:
-                        pb_head.BackgroundImage = global::qqclient.Properties.Resources.head7;
-                        break;
-                    case 8:
-                        pb_head.BackgroundImage = global::qqclient.Properties.Resources.head8;
-                        break;
-                    default:
-                        pb_head.BackgroundImage = global::qqclient.Properties.Resources.head8;
-                        break;
-                }
+                Frm_login frm_login = (Frm_login)(this.Owner);
+                pb_head.BackgroundImage = frm_login.get_imglisthead().Images[head_index-1];
 
                 lb_nouser.Hide();
                 pb_head.Show();
@@ -139,7 +111,6 @@ namespace qqclient
                 find_userid = arr_user_info[2];
 
                 //如果查找到的不是本人，才显示加好友按钮
-                Frm_login frm_login = (Frm_login)(this.Owner);
                 if (frm_login.frm_main.cur_userid != int.Parse(find_userid))
                 {
                     bt_add.Show();

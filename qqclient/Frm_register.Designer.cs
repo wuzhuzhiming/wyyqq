@@ -196,7 +196,6 @@
             // pb_head
             // 
             this.pb_head.BackColor = System.Drawing.Color.Transparent;
-            this.pb_head.BackgroundImage = global::qqclient.Properties.Resources.head8;
             this.pb_head.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pb_head.Location = new System.Drawing.Point(269, 285);
             this.pb_head.Margin = new System.Windows.Forms.Padding(4);
@@ -245,6 +244,7 @@
             this.Name = "Frm_register";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Frm_register";
+            this.Load += new System.EventHandler(this.Frm_register_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Frm_register_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Frm_register_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Frm_register_MouseUp);
