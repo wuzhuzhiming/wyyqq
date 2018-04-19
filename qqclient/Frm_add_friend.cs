@@ -25,7 +25,7 @@ namespace qqclient
 
         private void bt_close_Click(object sender, EventArgs e)
         {
-            Close();
+            Hide();
         }
 
         //鼠标在窗体按下

@@ -25,7 +25,7 @@ namespace qqclient
 
         private void bt_close_Click(object sender, EventArgs e)
         {
-            Close();
+            Hide();
         }
 
         private void bt_find_Click(object sender, EventArgs e)

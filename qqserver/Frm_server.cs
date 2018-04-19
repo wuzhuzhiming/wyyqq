@@ -153,8 +153,11 @@ namespace qqserver
                 //添加好友
                 add_friend(s_client, arr_recv);
             }else if (arr_recv[0] == "getnews"){
-                //获取消息列表
-                get_news(s_client, arr_recv);
+                //获取一条消息
+                get_one_news(s_client, arr_recv);
+            }else if (arr_recv[0] == "operatenews"){
+                //处理一条消息
+                operate_one_news(s_client, arr_recv);
             }
         }
 
@@ -254,8 +257,24 @@ namespace qqserver
                 else
                 {
                     //添加到在线列表
-                    online_players.Add(int.Parse(map_result["userid"]), s_client);
-                    online_sockets.Add(s_client, int.Parse(map_result["userid"]));
+                    if (!online_players.ContainsKey(int.Parse(map_result["userid"])))
+                    {
+                        online_players.Add(int.Parse(map_result["userid"]), s_client);
+                    }
+                    else
+                    {
+                        online_players[int.Parse(map_result["userid"])] = s_client;
+                    }
+
+                    if (!online_sockets.ContainsKey(s_client))
+                    {
+                        online_sockets.Add(s_client, int.Parse(map_result["userid"]));
+                    }
+                    else
+                    {
+                        online_sockets[s_client] = int.Parse(map_result["userid"]);
+                    }
+                    
                     //返回用户信息给客户端
                     string str_msg = String.Format(@"login_rsp&{0}&{1}&{2}&{3}&{4}",
                         arr_recv[1], map_result["userid"].ToString(), map_result["name"].ToString(), 
@@ -351,10 +370,36 @@ namespace qqserver
             }
         }
 
-        //获取消息列表
-        public void get_news(Socket s_client, string[] arr_recv)
+        //获取一条消息
+        public void get_one_news(Socket s_client, string[] arr_recv)
         {
+            //每次只获取一条
             int self_userid = get_online_userid(s_client);
+            int news_type = 0;
+            string with_userid, with_username, with_groupid, with_groupname;
+            dboperate.get_one_news(self_userid, ref news_type, out with_userid, out with_username, out with_groupid, out with_groupname);
+
+            if (news_type == 0)
+            {
+                //没有消息
+                string str_msg = "getnews_rsp&retcode&0";
+                send_data(s_client, str_msg);
+            }
+            else
+            {
+                //返回消息给客户端
+                string str_msg = String.Format(@"getnews_rsp&{0}&{1}&{2}&{3}&{4}",
+                    news_type, with_userid, with_username, with_groupid, with_groupname);
+                send_data(s_client, str_msg);
+            }
+        }
+
+        //处理一条消息
+        public void operate_one_news(Socket s_client, string[] arr_recv)
+        {
+            //删除相关消息
+            int self_userid = get_online_userid(s_client);
+            dboperate.del_news(self_userid, int.Parse(arr_recv[2]), int.Parse(arr_recv[3]), int.Parse(arr_recv[4]));
         }
     }
 }

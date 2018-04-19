@@ -32,6 +32,8 @@ namespace qqclient
         public Frm_add_friend frm_add_friend = null;
         //加群窗口
         public Frm_add_group frm_add_group = null;
+        //消息窗口
+        public Frm_news frm_news = null;
 
         public Frm_login()
         {
@@ -108,6 +110,9 @@ namespace qqclient
             //创建加群窗口对象
             frm_add_group = new Frm_add_group();
             frm_add_group.Owner = this;
+            //创建消息窗口对象
+            frm_news = new Frm_news();
+            frm_news.Owner = this;
         }
 
         //连接服务器
@@ -203,6 +208,9 @@ namespace qqclient
             }else if (arr_recv[0] == "findgroup_rsp"){
                 //查找群返回
                 findgroup_rsp(arr_recv);
+            }else if (arr_recv[0] == "getnews_rsp"){
+                //获取消息返回
+                getnews_rsp(arr_recv);
             }
         }
 
@@ -283,7 +291,7 @@ namespace qqclient
         public void findgroup_rsp(string[] arr_recv)
         {
             //查找群后通知登陆窗口线程
-            login_th_context.Post(new SendOrPostCallback(callback_finduser), arr_recv);
+            login_th_context.Post(new SendOrPostCallback(callback_findgroup), arr_recv);
         }
 
         //查找群返回后的处理 - 线程回调
@@ -291,6 +299,21 @@ namespace qqclient
         {
             string[] arr_recv = (string[])obj;
             frm_add_group.set_group_info(arr_recv);
+        }
+
+        //获取消息返回
+        public void getnews_rsp(string[] arr_recv)
+        {
+            //查找群后通知登陆窗口线程
+            login_th_context.Post(new SendOrPostCallback(callback_getnews), arr_recv);
+        }
+
+        //获取消息返回后的处理 - 线程回调
+        private void callback_getnews(object obj)
+        {
+            string[] arr_recv = (string[])obj;
+            frm_news.set_news(arr_recv);
+            frm_news.Show();
         }
 
         //账号输入框，做输入限制

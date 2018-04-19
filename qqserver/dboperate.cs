@@ -129,6 +129,40 @@ namespace qqserver
             sql_cmd.ExecuteNonQuery();
         }
 
-        //获取消息列表
+        //获取一条消息
+        public static void get_one_news(int userid, ref int news_type, out string with_userid, out string with_username, out string with_groupid, out string with_groupname)
+        {
+            string str_sql = String.Format("select top 1 * from v_news where userid={0}", userid);
+            SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
+            SqlDataReader sql_result = sql_cmd.ExecuteReader();
+
+            if (sql_result.Read())
+            {
+                news_type = int.Parse(sql_result["news_type"].ToString());
+                with_userid = sql_result["with_userid"].ToString();
+                with_username = sql_result["with_username"].ToString();
+                with_groupid = sql_result["with_groupid"].ToString();
+                with_groupname = sql_result["with_groupname"].ToString();
+            }
+            else
+            {
+                news_type = 0;
+                with_userid = "";
+                with_username = "";
+                with_groupid = "";
+                with_groupname = "";
+            }
+
+            sql_result.Close();
+        }
+
+        //删除一条新消息
+        public static void del_news(int userid, int news_type, int with_userid, int with_groupid)
+        {
+            string str_sql = String.Format(@"delete from t_news where userid={0} and news_type={1} and with_userid={2} and with_groupid={3}",
+                userid, news_type, with_userid, with_groupid);
+            SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
+            sql_cmd.ExecuteNonQuery();
+        }
     }
 }
