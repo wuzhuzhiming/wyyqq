@@ -400,6 +400,32 @@ namespace qqserver
             //删除相关消息
             int self_userid = get_online_userid(s_client);
             dboperate.del_news(self_userid, int.Parse(arr_recv[2]), int.Parse(arr_recv[3]), int.Parse(arr_recv[4]));
+
+            int news_result = int.Parse(arr_recv[1]);
+            int news_type = int.Parse(arr_recv[2]);
+
+            if (news_type == (int)NEWS_TYPE.APPLY_FRIEND)
+            {
+                //请求添加好友
+                if (news_result == 1)
+                {
+                    //同意
+                    if (dboperate.check_friend(int.Parse(arr_recv[3]), int.Parse(arr_recv[4])))
+                    {
+                        //不是好友时，添加好友数据到数据库
+                        dboperate.check_friend(int.Parse(arr_recv[3]), int.Parse(arr_recv[4]));
+                    }
+
+                    //给客户端返回消息类型
+                    string str_msg = String.Format("operatenews&{0}", news_type);
+                    send_data(s_client, str_msg);
+                    return;
+                }
+            }
+            else
+            {
+                //申请加入群
+            }
         }
     }
 }

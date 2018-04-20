@@ -164,5 +164,32 @@ namespace qqserver
             SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
             sql_cmd.ExecuteNonQuery();
         }
+
+        //查询是否已经是好友
+        public static bool check_friend(int userid, int with_userid)
+        {
+            string str_sql = String.Format(@"select * from t_friend where userid={0} and with_userid={1}", userid, with_userid);
+            SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
+            SqlDataReader sql_result = sql_cmd.ExecuteReader();
+
+            bool check_ret = false;
+
+            if (sql_result.Read())
+            {
+                check_ret = true;
+            }
+
+            sql_result.Close();
+            return check_ret;
+        }
+
+        //创建好友数据
+        public static void create_friend(int userid, int with_userid)
+        {
+            string str_sql = String.Format(@"insert into t_friend(userid,with_userid) values({0},{1}});insert into t_friend(userid,with_userid) values({2},{3}});",
+                userid, with_userid, with_userid, userid);
+            SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
+            sql_cmd.ExecuteNonQuery();
+        }
     }
 }
