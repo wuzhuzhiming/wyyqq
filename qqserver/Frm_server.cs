@@ -413,11 +413,11 @@ namespace qqserver
                     if (dboperate.check_friend(int.Parse(arr_recv[3]), int.Parse(arr_recv[4])))
                     {
                         //不是好友时，添加好友数据到数据库
-                        dboperate.check_friend(int.Parse(arr_recv[3]), int.Parse(arr_recv[4]));
+                        dboperate.create_friend(int.Parse(arr_recv[3]), int.Parse(arr_recv[4]));
                     }
 
                     //给客户端返回消息类型
-                    string str_msg = String.Format("operatenews&{0}", news_type);
+                    string str_msg = String.Format("operatenews_rsp&{0}", news_type);
                     send_data(s_client, str_msg);
                     return;
                 }

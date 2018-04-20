@@ -18,6 +18,13 @@ namespace qqclient
         //当前用户的userid
         public int cur_userid = 0;
 
+        //消息类型
+        enum NEWS_TYPE
+        {
+            APPLY_FRIEND = 1,       //申请好友
+            APPLY_GROUP = 2,        //申请加群
+        }
+
         public Frm_main()
         {
             InitializeComponent();
@@ -93,9 +100,19 @@ namespace qqclient
 
         private void bt_news_Click(object sender, EventArgs e)
         {
-            //发送请求消息列表的请求
+            //发送请求消息的请求
             string str_msg = "getnews";
             Frm_login.send_data(str_msg);
+        }
+
+        //处理消息返回
+        public void operate_news(string[] arr_rec)
+        {
+            int news_type = int.Parse(arr_rec[1]);
+            if (news_type == (int)NEWS_TYPE.APPLY_FRIEND)
+            {
+                //好友添加成功后刷新好友列表 
+            }
         }
     }
 }

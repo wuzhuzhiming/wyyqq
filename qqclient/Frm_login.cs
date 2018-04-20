@@ -211,6 +211,9 @@ namespace qqclient
             }else if (arr_recv[0] == "getnews_rsp"){
                 //获取消息返回
                 getnews_rsp(arr_recv);
+            }else if (arr_recv[0] == "operatenews_rsp"){
+                //消息处理返回
+                operatenews_rsp(arr_recv);
             }
         }
 
@@ -304,7 +307,7 @@ namespace qqclient
         //获取消息返回
         public void getnews_rsp(string[] arr_recv)
         {
-            //查找群后通知登陆窗口线程
+            //获取消息后通知登陆窗口线程
             login_th_context.Post(new SendOrPostCallback(callback_getnews), arr_recv);
         }
 
@@ -314,6 +317,24 @@ namespace qqclient
             string[] arr_recv = (string[])obj;
             frm_news.set_news(arr_recv);
             frm_news.Show();
+        }
+
+        //消息处理返回
+        public void operatenews_rsp(string[] arr_recv)
+        {
+            //查找群后通知登陆窗口线程
+            login_th_context.Post(new SendOrPostCallback(callback_operatenews), arr_recv);
+        }
+
+        //获取消息返回后的处理 - 线程回调
+        private void callback_operatenews(object obj)
+        {
+            //隐藏消息窗口
+            frm_news.Hide();
+            //通知主界面
+            string[] arr_recv = (string[])obj;
+            frm_main.operate_news(arr_recv);
+            frm_main.Show();
         }
 
         //账号输入框，做输入限制
