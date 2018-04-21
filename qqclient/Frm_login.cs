@@ -96,6 +96,36 @@ namespace qqclient
             return imglisthead;
         }
 
+        //账号输入框，做输入限制
+        private void tb_account_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //账号只允许字母、数字、下划线
+            if ((e.KeyChar >= 'A' && e.KeyChar <= 'Z') || (e.KeyChar >= 'a' && e.KeyChar <= 'z') ||
+                (e.KeyChar >= '0' && e.KeyChar <= '9') || (e.KeyChar == '_') || (e.KeyChar == 8))
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
+        }
+
+        //密码输入框，做输入限制
+        private void tb_pass_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //密码只允许字母、数字、下划线
+            if ((e.KeyChar >= 'A' && e.KeyChar <= 'Z') || (e.KeyChar >= 'a' && e.KeyChar <= 'z') ||
+                (e.KeyChar >= '0' && e.KeyChar <= '9') || (e.KeyChar == '_') || (e.KeyChar == 8))
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
+        }
+
         //窗口加载时的处理
         private void Frm_login_Load(object sender, EventArgs e)
         {
@@ -149,6 +179,22 @@ namespace qqclient
 
                 //标记为已经连接
                 is_connect = true;
+            }
+        }
+
+        //发送数据给服务器
+        public static void send_data(string str_data)
+        {
+            //将字符串转为二进制 
+            byte[] byte_data = Encoding.UTF8.GetBytes(str_data);
+            //发送数据
+            try
+            {
+                s_client.Send(byte_data);
+            }
+            catch
+            {
+                return;
             }
         }
 
@@ -214,22 +260,12 @@ namespace qqclient
             }else if (arr_recv[0] == "operatenews_rsp"){
                 //消息处理返回
                 operatenews_rsp(arr_recv);
-            }
-        }
-
-        //发送数据给服务器
-        public static void send_data(string str_data)
-        {
-            //将字符串转为二进制 
-            byte[] byte_data = Encoding.UTF8.GetBytes(str_data);
-            //发送数据
-            try
-            {
-                s_client.Send(byte_data);
-            }
-            catch
-            {
-                return;
+            }else if (arr_recv[0] == "getfriends_rsp"){
+                //获取好友列表返回
+                getfriends_rsp(arr_recv);
+            }else if (arr_recv[0] == "sendchat_rsp"){
+                //收到好友发送的聊天信息
+                sendchat_rsp(arr_recv);
             }
         }
 
@@ -326,7 +362,7 @@ namespace qqclient
             login_th_context.Post(new SendOrPostCallback(callback_operatenews), arr_recv);
         }
 
-        //获取消息返回后的处理 - 线程回调
+        //消息处理返回后的处理 - 线程回调
         private void callback_operatenews(object obj)
         {
             //隐藏消息窗口
@@ -337,34 +373,35 @@ namespace qqclient
             frm_main.Show();
         }
 
-        //账号输入框，做输入限制
-        private void tb_account_KeyPress(object sender, KeyPressEventArgs e)
+        //获取好友列表返回
+        public void getfriends_rsp(string[] arr_recv)
         {
-            //账号只允许字母、数字、下划线
-            if ((e.KeyChar >= 'A' && e.KeyChar <= 'Z') || (e.KeyChar >= 'a' && e.KeyChar <= 'z') ||
-                (e.KeyChar >= '0' && e.KeyChar <= '9') || (e.KeyChar == '_') || (e.KeyChar == 8))
-            {
-                e.Handled = false;
-            }
-            else
-            {
-                e.Handled = true;
-            }
+            //获取好友列表后通知登陆窗口线程
+            login_th_context.Post(new SendOrPostCallback(callback_getfriends), arr_recv);
         }
 
-        //密码输入框，做输入限制
-        private void tb_pass_KeyPress(object sender, KeyPressEventArgs e)
+        //获取好友列表返回后的处理 - 线程回调
+        private void callback_getfriends(object obj)
         {
-            //密码只允许字母、数字、下划线
-            if ((e.KeyChar >= 'A' && e.KeyChar <= 'Z') || (e.KeyChar >= 'a' && e.KeyChar <= 'z') ||
-                (e.KeyChar >= '0' && e.KeyChar <= '9') || (e.KeyChar == '_') || (e.KeyChar == 8))
-            {
-                e.Handled = false;
-            }
-            else
-            {
-                e.Handled = true;
-            }
+            //通知主界面
+            string[] arr_recv = (string[])obj;
+            frm_main.set_friendlist(arr_recv);
+            frm_main.Show();
+        }
+
+        //收到好友发送的聊天信息
+        public void sendchat_rsp(string[] arr_recv)
+        {
+            //收到好友发送聊天信息后通知登陆窗口线程
+            login_th_context.Post(new SendOrPostCallback(callback_sendchat), arr_recv);
+        }
+
+        //收到好友发送的聊天信息后的处理 - 线程回调
+        private void callback_sendchat(object obj)
+        {
+            //通知主界面
+            string[] arr_recv = (string[])obj;
+            frm_main.send_chat_rsp(arr_recv);
         }
     }
 }

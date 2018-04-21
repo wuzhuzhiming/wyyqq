@@ -186,10 +186,33 @@ namespace qqserver
         //创建好友数据
         public static void create_friend(int userid, int with_userid)
         {
-            string str_sql = String.Format(@"insert into t_friend(userid,with_userid) values({0},{1}});insert into t_friend(userid,with_userid) values({2},{3}});",
+            string str_sql = String.Format(@"insert into t_friend(userid,with_userid) values({0},{1});insert into t_friend(userid,with_userid) values({2},{3});",
                 userid, with_userid, with_userid, userid);
             SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
             sql_cmd.ExecuteNonQuery();
+        }
+
+        //查询用户的好友列表
+        public static List<string> get_friendlist(int userid)
+        {
+            string str_sql = String.Format("select * from v_friend where userid={0}", userid);
+            SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
+            SqlDataReader sql_result = sql_cmd.ExecuteReader();
+
+            List<string> list_result = new List<string>();
+            while (sql_result.Read())
+            {
+                //把好友的基本信息拼接成字符串
+                string str_friend = String.Format(@"{0}|{1}|{2}|{3}",
+                    sql_result["friend_userid"].ToString(),
+                    sql_result["name"].ToString(),
+                    sql_result["sex"].ToString(),
+                    sql_result["head"].ToString());
+                list_result.Add(str_friend);
+            }
+
+            sql_result.Close();
+            return list_result;
         }
     }
 }

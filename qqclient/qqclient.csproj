@@ -55,6 +55,12 @@
     <Compile Include="Frm_add_group.Designer.cs">
       <DependentUpon>Frm_add_group.cs</DependentUpon>
     </Compile>
+    <Compile Include="Frm_chat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm_chat.Designer.cs">
+      <DependentUpon>Frm_chat.cs</DependentUpon>
+    </Compile>
     <Compile Include="Frm_head.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Frm_add_group.resx">
       <DependentUpon>Frm_add_group.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frm_chat.resx">
+      <DependentUpon>Frm_chat.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Frm_head.resx">
       <DependentUpon>Frm_head.cs</DependentUpon>

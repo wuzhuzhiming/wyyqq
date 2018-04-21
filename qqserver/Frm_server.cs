@@ -158,6 +158,12 @@ namespace qqserver
             }else if (arr_recv[0] == "operatenews"){
                 //处理一条消息
                 operate_one_news(s_client, arr_recv);
+            }else if (arr_recv[0] == "getfriends"){
+                //获取好友列表
+                get_friends(s_client, arr_recv);
+            }else if (arr_recv[0] == "sendchat"){
+                //发送聊天信息
+                send_chat(s_client, arr_recv);
             }
         }
 
@@ -410,10 +416,10 @@ namespace qqserver
                 if (news_result == 1)
                 {
                     //同意
-                    if (dboperate.check_friend(int.Parse(arr_recv[3]), int.Parse(arr_recv[4])))
+                    if (!dboperate.check_friend(self_userid, int.Parse(arr_recv[3])))
                     {
                         //不是好友时，添加好友数据到数据库
-                        dboperate.create_friend(int.Parse(arr_recv[3]), int.Parse(arr_recv[4]));
+                        dboperate.create_friend(self_userid, int.Parse(arr_recv[3]));
                     }
 
                     //给客户端返回消息类型
@@ -425,6 +431,54 @@ namespace qqserver
             else
             {
                 //申请加入群
+            }
+        }
+
+        //获取好友列表
+        public void get_friends(Socket s_client, string[] arr_recv)
+        {
+            int self_userid = get_online_userid(s_client);
+            List<string> list_friend = dboperate.get_friendlist(self_userid);
+            string str_msg = "getfriends_rsp";
+            if (list_friend.Count > 0 )
+            {
+                str_msg = str_msg + "&";
+            }
+            for (int i = 0; i < list_friend.Count; i++)
+            {
+                str_msg = str_msg + list_friend[i];
+                if (i < list_friend.Count - 1)
+                {
+                    str_msg = str_msg + "-";
+                }
+            }
+            send_data(s_client, str_msg);
+        }
+
+        //发送聊天信息
+        public void send_chat(Socket s_client, string[] arr_recv)
+        {
+            if (arr_recv.Length < 3)
+            {
+                return;
+            }
+
+            int self_userid = get_online_userid(s_client);
+            int chat_userid = int.Parse(arr_recv[1]);
+            string str_chat = arr_recv[2];
+
+            if (self_userid != chat_userid)
+            {
+                if (!online_players.ContainsKey(chat_userid))
+                {
+                    //如果对方不在线，则不发送
+                    return;
+                }
+
+                //发送聊天信息给好友
+                Socket s_chat = online_players[chat_userid];
+                string str_msg = "sendchat_rsp&" + self_userid + "&" + str_chat;
+                send_data(s_chat, str_msg);
             }
         }
     }

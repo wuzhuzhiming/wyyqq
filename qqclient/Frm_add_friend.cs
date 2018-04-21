@@ -111,7 +111,7 @@ namespace qqclient
                 find_userid = arr_user_info[2];
 
                 //如果查找到的不是本人，才显示加好友按钮
-                if (frm_login.frm_main.cur_userid != int.Parse(find_userid))
+                if (frm_login.frm_main.self_userid != int.Parse(find_userid))
                 {
                     bt_add.Show();
                 }
