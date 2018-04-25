@@ -250,5 +250,11 @@ namespace qqclient
                 frm_chat.recv_chat(str_cur_chat);
             }
         }
+
+        //点击菜单按钮，弹出资料修改窗口
+        private void bt_menu_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
