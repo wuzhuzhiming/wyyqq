@@ -28,8 +28,10 @@ namespace qqserver
         public static bool check_account(string str_account)
         {
             string str_sql = "select count(*) from t_user where account=\'" + str_account + "\'";
+            connect_db();
             SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
             int account_num = (int)sql_cmd.ExecuteScalar();
+            db_connect.Close();
 
             if (account_num > 0)
             {
@@ -46,14 +48,17 @@ namespace qqserver
         {
             string str_sql = String.Format(@"insert into t_user(account,pass,name,sex,head) values('{0}','{1}','{2}',{3},{4})",
                 arr_recv[1], arr_recv[2], arr_recv[3], int.Parse(arr_recv[4]), int.Parse(arr_recv[5]));
+            connect_db();
             SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
             sql_cmd.ExecuteNonQuery();
+            db_connect.Close();
         }
 
         //查询密码是否已经一致
         public static bool check_pass(string str_account, string str_pass)
         {
             string str_sql = "select pass from t_user where account=\'" + str_account + "\'";
+            connect_db();
             SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
             SqlDataReader sql_result = sql_cmd.ExecuteReader();
 
@@ -74,6 +79,7 @@ namespace qqserver
             }
 
             sql_result.Close();
+            db_connect.Close();
             return check_ret;
         }
 
@@ -81,6 +87,7 @@ namespace qqserver
         public static Dictionary<string, string> get_user_info(string str_account)
         {
             string str_sql = "select * from t_user where account=\'" + str_account + "\'";
+            connect_db();
             SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
             SqlDataReader sql_result = sql_cmd.ExecuteReader();
 
@@ -95,6 +102,7 @@ namespace qqserver
             }
 
             sql_result.Close();
+            db_connect.Close();
             return map_result;
         }
 
@@ -102,6 +110,7 @@ namespace qqserver
         public static Dictionary<string, string> get_user_info_from_userid(int userid)
         {
             string str_sql = String.Format("select * from t_user where userid={0}", userid);
+            connect_db();
             SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
             SqlDataReader sql_result = sql_cmd.ExecuteReader();
 
@@ -116,6 +125,7 @@ namespace qqserver
             }
 
             sql_result.Close();
+            db_connect.Close();
             return map_result;
         }
 
@@ -125,14 +135,17 @@ namespace qqserver
             string str_sql = String.Format(@"insert into t_news(userid,news_type,with_userid,with_groupid) 
                 values({0},{1},{2},{3})",
                 userid, news_type, with_userid, with_groupid);
+            connect_db();
             SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
             sql_cmd.ExecuteNonQuery();
+            db_connect.Close();
         }
 
         //获取一条消息
         public static void get_one_news(int userid, ref int news_type, out string with_userid, out string with_username, out string with_groupid, out string with_groupname)
         {
             string str_sql = String.Format("select top 1 * from v_news where userid={0}", userid);
+            connect_db();
             SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
             SqlDataReader sql_result = sql_cmd.ExecuteReader();
 
@@ -154,6 +167,7 @@ namespace qqserver
             }
 
             sql_result.Close();
+            db_connect.Close();
         }
 
         //删除一条新消息
@@ -161,14 +175,17 @@ namespace qqserver
         {
             string str_sql = String.Format(@"delete from t_news where userid={0} and news_type={1} and with_userid={2} and with_groupid={3}",
                 userid, news_type, with_userid, with_groupid);
+            connect_db();
             SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
             sql_cmd.ExecuteNonQuery();
+            db_connect.Close();
         }
 
         //查询是否已经是好友
         public static bool check_friend(int userid, int with_userid)
         {
             string str_sql = String.Format(@"select * from t_friend where userid={0} and with_userid={1}", userid, with_userid);
+            connect_db();
             SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
             SqlDataReader sql_result = sql_cmd.ExecuteReader();
 
@@ -180,6 +197,7 @@ namespace qqserver
             }
 
             sql_result.Close();
+            db_connect.Close();
             return check_ret;
         }
 
@@ -188,14 +206,17 @@ namespace qqserver
         {
             string str_sql = String.Format(@"insert into t_friend(userid,with_userid) values({0},{1});insert into t_friend(userid,with_userid) values({2},{3});",
                 userid, with_userid, with_userid, userid);
+            connect_db();
             SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
             sql_cmd.ExecuteNonQuery();
+            db_connect.Close();
         }
 
         //查询用户的好友列表
         public static List<string> get_friendlist(int userid)
         {
             string str_sql = String.Format("select * from v_friend where userid={0}", userid);
+            connect_db();
             SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
             SqlDataReader sql_result = sql_cmd.ExecuteReader();
 
@@ -212,6 +233,7 @@ namespace qqserver
             }
 
             sql_result.Close();
+            db_connect.Close();
             return list_result;
         }
     }
