@@ -16,7 +16,7 @@ namespace qqclient
         //是否为左键
         bool is_mouse_left;
         //头像编号
-        int head_index = 8;
+        int head_index = 1;
 
         public Frm_register()
         {
