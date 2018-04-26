@@ -147,7 +147,7 @@ namespace qqclient
         //获取好友列表数据后，刷新好友列表
         public void set_friendlist(string[] arr_recv)
         {
-            lv_friend.BeginUpdate();
+            //lv_friend.BeginUpdate();
 
             //清空好友列表
             lv_friend.Items.Clear();
@@ -182,7 +182,7 @@ namespace qqclient
                 map_friendinfo.Add(friend_userid, friendinfo);
             }
 
-            lv_friend.EndUpdate();
+            //lv_friend.EndUpdate();
         }
 
         //双击好友头像后，弹出聊天窗口
@@ -249,6 +249,12 @@ namespace qqclient
                 string str_cur_chat = map_friendinfo[friend_userid].name + " " + DateTime.Now.ToString() + "\n  " + arr_recv[2];
                 frm_chat.recv_chat(str_cur_chat);
             }
+        }
+
+        //点击菜单按钮，弹出资料修改窗口
+        private void bt_menu_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
