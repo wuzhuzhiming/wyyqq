@@ -29,7 +29,7 @@ namespace qqclient
         //主窗口
         public Frm_main frm_main = null;
         //添加好友窗口
-        public Frm_add_friend frm_add_friend = null;
+        //public Frm_add_friend frm_add_friend = null;
         //加群窗口
         public Frm_add_group frm_add_group = null;
         //消息窗口
@@ -134,15 +134,15 @@ namespace qqclient
             //创建主界面窗口对象
             frm_main = new Frm_main();
             frm_main.Owner = this;
-            //创建添加好友窗口对象
-            frm_add_friend = new Frm_add_friend();
-            frm_add_friend.Owner = this;
+            ////创建添加好友窗口对象
+            //frm_add_friend = new Frm_add_friend();
+            //frm_add_friend.Owner = this;
             //创建加群窗口对象
             frm_add_group = new Frm_add_group();
             frm_add_group.Owner = this;
-            //创建消息窗口对象
-            frm_news = new Frm_news();
-            frm_news.Owner = this;
+            ////创建消息窗口对象
+            //frm_news = new Frm_news();
+            //frm_news.Owner = this;
         }
 
         //连接服务器
@@ -260,6 +260,9 @@ namespace qqclient
             }else if (arr_recv[0] == "operatenews_rsp"){
                 //消息处理返回
                 operatenews_rsp(arr_recv);
+            }else if (arr_recv[0] == "operatenews_notify"){
+                //消息处理通知
+                operatenews_notify(arr_recv);
             }else if (arr_recv[0] == "getfriends_rsp"){
                 //获取好友列表返回
                 getfriends_rsp(arr_recv);
@@ -323,7 +326,9 @@ namespace qqclient
         private void callback_finduser(object obj)
         {
             string[] arr_recv = (string[])obj;
-            frm_add_friend.set_user_info(arr_recv);
+            frm_main.set_frm_addfriend_user_info(arr_recv);
+            //frm_add_friend = new Frm_add_friend();
+            //frm_add_friend.set_user_info(arr_recv);
         }
 
         //查找群返回
@@ -351,6 +356,8 @@ namespace qqclient
         private void callback_getnews(object obj)
         {
             string[] arr_recv = (string[])obj;
+            frm_news = new Frm_news();
+            frm_news.Owner = this;
             frm_news.set_news(arr_recv);
             frm_news.Show();
         }
@@ -358,7 +365,7 @@ namespace qqclient
         //消息处理返回
         public void operatenews_rsp(string[] arr_recv)
         {
-            //查找群后通知登陆窗口线程
+            //处理消息后通知登陆窗口线程
             login_th_context.Post(new SendOrPostCallback(callback_operatenews), arr_recv);
         }
 
@@ -366,7 +373,23 @@ namespace qqclient
         private void callback_operatenews(object obj)
         {
             //隐藏消息窗口
-            frm_news.Hide();
+            frm_news.Close();
+            //通知主界面
+            string[] arr_recv = (string[])obj;
+            frm_main.operate_news(arr_recv);
+            frm_main.Show();
+        }
+
+        //消息处理通知(其他用户处理本人请求的消息)
+        public void operatenews_notify(string[] arr_recv)
+        {
+            //s收到处理消息通知后通知登陆窗口线程
+            login_th_context.Post(new SendOrPostCallback(callback_operatenews_notify), arr_recv);
+        }
+
+        //消息处理通知后的处理 - 线程回调
+        private void callback_operatenews_notify(object obj)
+        {
             //通知主界面
             string[] arr_recv = (string[])obj;
             frm_main.operate_news(arr_recv);

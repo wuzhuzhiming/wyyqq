@@ -63,7 +63,7 @@ namespace qqclient
 
         private void bt_close_Click(object sender, EventArgs e)
         {
-            Hide();
+            Close();
         }
 
         public void set_news(string[] arr_news_data)
@@ -108,7 +108,7 @@ namespace qqclient
             //同意好友申请、加群申请
             string str_msg = String.Format(@"operatenews&1&{0}&{1}&{2}", news_type, with_userid, with_groupid);
             Frm_login.send_data(str_msg);
-            Hide();
+            Close();
         }
 
         private void bt_refuse_Click(object sender, EventArgs e)
@@ -116,7 +116,7 @@ namespace qqclient
             //拒绝好友申请、加群申请
             string str_msg = String.Format(@"operatenews&0&{0}&{1}&{2}", news_type, with_userid, with_groupid);
             Frm_login.send_data(str_msg);
-            Hide();
+            Close();
         }
     }
 }

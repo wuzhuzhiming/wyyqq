@@ -31,6 +31,9 @@ namespace qqclient
         //聊天窗口列表
         Dictionary<int, Form> map_chatfrm = new Dictionary<int, Form>();
 
+        //添加好友窗口
+        public Frm_add_friend frm_add_friend = null;
+
         //消息类型
         enum NEWS_TYPE
         {
@@ -88,6 +91,16 @@ namespace qqclient
             }
         }
 
+        //检测给定的userid是否已经是本人的好友
+        public bool check_friend(int userid)
+        {
+            if (map_friendinfo.ContainsKey(userid))
+            {
+                return true;
+            }
+            return false;
+        }
+
         //设置用户基本信息
         public void set_user_info(string[] arr_user_info)
         {
@@ -110,8 +123,18 @@ namespace qqclient
         private void bt_add_friend_Click(object sender, EventArgs e)
         {
             //弹出添加好友窗口
-            Frm_login frm_login = (Frm_login)(this.Owner);
-            frm_login.frm_add_friend.Show();
+            //Frm_login frm_login = (Frm_login)(this.Owner);
+            //frm_login.frm_add_friend.Show();
+
+            frm_add_friend = new Frm_add_friend();
+            frm_add_friend.Owner = this.Owner;
+            frm_add_friend.Show();
+        }
+
+        //设置添加好友窗口的用户信息
+        public void set_frm_addfriend_user_info(string[] arr_user_info)
+        {
+            frm_add_friend.set_user_info(arr_user_info);
         }
 
         private void bt_add_group_Click(object sender, EventArgs e)

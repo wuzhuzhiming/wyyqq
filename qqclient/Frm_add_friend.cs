@@ -25,7 +25,7 @@ namespace qqclient
 
         private void bt_close_Click(object sender, EventArgs e)
         {
-            Hide();
+            Close();
         }
 
         //鼠标在窗体按下
@@ -110,10 +110,14 @@ namespace qqclient
                 lb_userid.Show();
                 find_userid = arr_user_info[2];
 
-                //如果查找到的不是本人，才显示加好友按钮
+                //如果查找到的不是本人且还不是好友，才显示加好友按钮
                 if (frm_login.frm_main.self_userid != int.Parse(find_userid))
                 {
-                    bt_add.Show();
+                    Frm_main frm_main = (Frm_main)(frm_login.frm_main);
+                    if (!frm_main.check_friend(int.Parse(find_userid)))
+                    {
+                        bt_add.Show();
+                    }
                 }
             }
         }
@@ -123,7 +127,7 @@ namespace qqclient
         {
             if (find_userid.Length > 0)
             {
-                //发送查找请求给服务器
+                //发送添加好友请求给服务器
                 string str_msg = String.Format("addfriend&{0}", find_userid);
                 Frm_login.send_data(str_msg);
             }

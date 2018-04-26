@@ -368,7 +368,7 @@ namespace qqserver
                 int self_userid = get_online_userid(s_client);
                 int with_userid = int.Parse(arr_recv[1]);
 
-                if (self_userid != with_userid)
+                if (self_userid != with_userid && !dboperate.check_friend(self_userid, with_userid))
                 {
                     Dictionary<string, string> map_result = dboperate.get_user_info_from_userid(with_userid);
                     if (!map_result.ContainsKey("userid") || !map_result.ContainsKey("name") ||
@@ -443,7 +443,8 @@ namespace qqserver
                     Socket s_with_client = get_online_socket(with_userid);
                     if (s_with_client != null)
                     {
-                        send_data(s_with_client, str_msg);
+                        string str_msg_2 = String.Format("operatenews_notify&{0}", news_type);
+                        send_data(s_with_client, str_msg_2);
                     }
                     return;
                 }
