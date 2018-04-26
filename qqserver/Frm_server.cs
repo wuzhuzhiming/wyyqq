@@ -196,6 +196,19 @@ namespace qqserver
             }
         }
 
+        //由在线玩家的userid获取socket
+        private Socket get_online_socket(int userid)
+        {
+            if (online_players.ContainsKey(userid))
+            {
+                return online_players[userid];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         //注册
         public void register(Socket s_client, string[] arr_recv)
         {
@@ -416,15 +429,22 @@ namespace qqserver
                 if (news_result == 1)
                 {
                     //同意
-                    if (!dboperate.check_friend(self_userid, int.Parse(arr_recv[3])))
+                    int with_userid = int.Parse(arr_recv[3]);
+                    if (!dboperate.check_friend(self_userid, with_userid))
                     {
                         //不是好友时，添加好友数据到数据库
-                        dboperate.create_friend(self_userid, int.Parse(arr_recv[3]));
+                        dboperate.create_friend(self_userid, with_userid);
                     }
 
                     //给客户端返回消息类型
                     string str_msg = String.Format("operatenews_rsp&{0}", news_type);
                     send_data(s_client, str_msg);
+                    //如果对方在线，则给对方发送消息类型
+                    Socket s_with_client = get_online_socket(with_userid);
+                    if (s_with_client != null)
+                    {
+                        send_data(s_with_client, str_msg);
+                    }
                     return;
                 }
             }
