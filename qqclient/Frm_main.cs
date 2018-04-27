@@ -18,6 +18,8 @@ namespace qqclient
         //本人的信息
         public int self_userid = 0;
         public string self_name = "";
+        public int self_head = 1;
+        public string self_pass = "";
 
         //好友信息列表
         struct friend_info
@@ -108,10 +110,11 @@ namespace qqclient
             lb_userid.Text = arr_user_info[2];
             self_userid = int.Parse(arr_user_info[2]);
             self_name = arr_user_info[3];
+            self_pass = arr_user_info[6];
 
-            int head_index = int.Parse(arr_user_info[5]);
+            self_head = int.Parse(arr_user_info[5]);
             Frm_login frm_login = (Frm_login)(this.Owner);
-            pb_head.BackgroundImage = frm_login.get_imglisthead().Images[head_index - 1];
+            pb_head.BackgroundImage = frm_login.get_imglisthead().Images[self_head - 1];
         }
 
         private void Frm_main_Load(object sender, EventArgs e)
@@ -274,10 +277,24 @@ namespace qqclient
             }
         }
 
-        //点击菜单按钮，弹出资料修改窗口
-        private void bt_menu_Click(object sender, EventArgs e)
+        //点击菜单按钮
+        private void bt_menu_MouseDown(object sender, MouseEventArgs e)
         {
+            cms_menu.Show((Button)sender, new Point(e.X, e.Y));
+        }
 
+        private void tsmi_modify_Click(object sender, EventArgs e)
+        {
+            //弹出修改资料窗口
+            Frm_modify frm_modify = new Frm_modify();
+            frm_modify.Owner = this;
+            frm_modify.set_user_info(self_name, self_head);
+            frm_modify.Show();
+        }
+
+        private void tsmi_exit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

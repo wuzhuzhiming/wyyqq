@@ -164,6 +164,9 @@ namespace qqserver
             }else if (arr_recv[0] == "sendchat"){
                 //发送聊天信息
                 send_chat(s_client, arr_recv);
+            }else if (arr_recv[0] == "modify"){
+                //用户修改资料
+                modify_userinfo(s_client, arr_recv);
             }
         }
 
@@ -295,9 +298,9 @@ namespace qqserver
                     }
                     
                     //返回用户信息给客户端
-                    string str_msg = String.Format(@"login_rsp&{0}&{1}&{2}&{3}&{4}",
+                    string str_msg = String.Format(@"login_rsp&{0}&{1}&{2}&{3}&{4}&{5}",
                         arr_recv[1], map_result["userid"].ToString(), map_result["name"].ToString(), 
-                        map_result["sex"].ToString(), map_result["head"].ToString());
+                        map_result["sex"].ToString(), map_result["head"].ToString(), arr_recv[2]);
                     send_data(s_client, str_msg);
                 }
             }
@@ -501,6 +504,71 @@ namespace qqserver
                 string str_msg = "sendchat_rsp&" + self_userid + "&" + str_chat;
                 send_data(s_chat, str_msg);
             }
+        }
+
+        //用户修改资料
+        public void modify_userinfo(Socket s_client, string[] arr_recv)
+        {
+            ////账号、密码
+            //if (arr_recv.Length < 3)
+            //{
+            //    string str_msg = "retcode&0&登陆信息不完整";
+            //    send_data(s_client, str_msg);
+            //}
+            //else
+            //{
+            //    //检测账号是否存在
+            //    if (!dboperate.check_account(arr_recv[1]))
+            //    {
+            //        string str_msg = "retcode&0&账号不存在";
+            //        send_data(s_client, str_msg);
+            //        return;
+            //    }
+
+            //    //检测密码是否正确
+            //    if (!dboperate.check_pass(arr_recv[1], arr_recv[2]))
+            //    {
+            //        string str_msg = "retcode&0&密码错误";
+            //        send_data(s_client, str_msg);
+            //        return;
+            //    }
+
+            //    //账号、密码检测通过后，从数据库中获取用户的基本信息
+            //    Dictionary<string, string> map_result = dboperate.get_user_info(arr_recv[1]);
+            //    if (!map_result.ContainsKey("userid") || !map_result.ContainsKey("name") ||
+            //        !map_result.ContainsKey("sex") || !map_result.ContainsKey("head"))
+            //    {
+            //        string str_msg = "retcode&0&获取用户数据失败";
+            //        send_data(s_client, str_msg);
+            //    }
+            //    else
+            //    {
+            //        //添加到在线列表
+            //        if (!online_players.ContainsKey(int.Parse(map_result["userid"])))
+            //        {
+            //            online_players.Add(int.Parse(map_result["userid"]), s_client);
+            //        }
+            //        else
+            //        {
+            //            online_players[int.Parse(map_result["userid"])] = s_client;
+            //        }
+
+            //        if (!online_sockets.ContainsKey(s_client))
+            //        {
+            //            online_sockets.Add(s_client, int.Parse(map_result["userid"]));
+            //        }
+            //        else
+            //        {
+            //            online_sockets[s_client] = int.Parse(map_result["userid"]);
+            //        }
+
+            //        //返回用户信息给客户端
+            //        string str_msg = String.Format(@"login_rsp&{0}&{1}&{2}&{3}&{4}&{5}",
+            //            arr_recv[1], map_result["userid"].ToString(), map_result["name"].ToString(),
+            //            map_result["sex"].ToString(), map_result["head"].ToString(), arr_recv[2]);
+            //        send_data(s_client, str_msg);
+            //    }
+            //}
         }
     }
 }

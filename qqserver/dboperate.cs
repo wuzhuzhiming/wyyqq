@@ -98,6 +98,7 @@ namespace qqserver
             if (sql_result.Read())
             {
                 map_result.Add("account", sql_result["account"].ToString());
+                map_result.Add("pass", sql_result["pass"].ToString());
                 map_result.Add("userid", sql_result["userid"].ToString());
                 map_result.Add("name", sql_result["name"].ToString());
                 map_result.Add("sex", sql_result["sex"].ToString());
