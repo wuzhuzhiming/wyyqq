@@ -123,6 +123,7 @@ namespace qqserver
             if (sql_result.Read())
             {
                 map_result.Add("account", sql_result["account"].ToString());
+                map_result.Add("pass", sql_result["pass"].ToString());
                 map_result.Add("userid", sql_result["userid"].ToString());
                 map_result.Add("name", sql_result["name"].ToString());
                 map_result.Add("sex", sql_result["sex"].ToString());
@@ -247,6 +248,18 @@ namespace qqserver
             db_connect.Close();
             connect_db();
             return list_result;
+        }
+
+        //修改用户资料
+        public static void modify_userinfo(int userid, string[] arr_recv)
+        {
+            string str_sql = String.Format(@"update t_user set pass='{0}',name='{1}',head={2} where userid={3}",
+                arr_recv[1], arr_recv[2], int.Parse(arr_recv[3]), userid);
+            //connect_db();
+            SqlCommand sql_cmd = new SqlCommand(str_sql, db_connect);
+            sql_cmd.ExecuteNonQuery();
+            db_connect.Close();
+            connect_db();
         }
     }
 }

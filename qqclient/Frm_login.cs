@@ -269,6 +269,9 @@ namespace qqclient
             }else if (arr_recv[0] == "sendchat_rsp"){
                 //收到好友发送的聊天信息
                 sendchat_rsp(arr_recv);
+            }else if (arr_recv[0] == "modify_rsp"){
+                //修改用户资料返回
+                modify_rsp(arr_recv);
             }
         }
 
@@ -425,6 +428,21 @@ namespace qqclient
             //通知主界面
             string[] arr_recv = (string[])obj;
             frm_main.send_chat_rsp(arr_recv);
+        }
+
+        //修改资料成功返回
+        public void modify_rsp(string[] arr_recv)
+        {
+            //修改资料成功返回后通知登陆窗口线程
+            login_th_context.Post(new SendOrPostCallback(callback_modify), arr_recv);
+        }
+
+        //修改资料成功返回后的处理 - 线程回调
+        private void callback_modify(object obj)
+        {
+            //通知主界面
+            string[] arr_recv = (string[])obj;
+            frm_main.modify_rsp(arr_recv);
         }
     }
 }

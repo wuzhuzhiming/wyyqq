@@ -25,8 +25,9 @@ namespace qqclient
 
         public void set_user_info(string user_name, int user_head)
         {
+            head_index = user_head;
             tb_name.Text = user_name;
-            Frm_login frm_login = (Frm_login)(this.Owner);
+            Frm_login frm_login = (Frm_login)(this.Owner.Owner);
             pb_head.BackgroundImage = frm_login.get_imglisthead().Images[user_head - 1];
         }
 
@@ -104,7 +105,7 @@ namespace qqclient
                 str_name != frm_main.self_name ||
                 head_index != frm_main.self_head)
             {
-                string str_msg = "modify&" + str_pass + "&" + str_name + "&" + head_index.ToString();
+                string str_msg = "modify&" + str_pass + "&" + str_name + "&" + head_index;
                 Frm_login.send_data(str_msg);
             }
 

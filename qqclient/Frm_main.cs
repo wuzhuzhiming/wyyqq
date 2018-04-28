@@ -296,5 +296,17 @@ namespace qqclient
         {
             Application.Exit();
         }
+
+        //修改用户资料返回
+        public void modify_rsp(string[] arr_recv)
+        {
+            self_pass = arr_recv[1];
+            self_name = arr_recv[2];
+            self_head = int.Parse(arr_recv[3]);
+
+            lb_name.Text = self_name;
+            Frm_login frm_login = (Frm_login)(this.Owner);
+            pb_head.BackgroundImage = frm_login.get_imglisthead().Images[self_head - 1];
+        }
     }
 }

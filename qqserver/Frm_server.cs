@@ -509,66 +509,31 @@ namespace qqserver
         //用户修改资料
         public void modify_userinfo(Socket s_client, string[] arr_recv)
         {
-            ////账号、密码
-            //if (arr_recv.Length < 3)
-            //{
-            //    string str_msg = "retcode&0&登陆信息不完整";
-            //    send_data(s_client, str_msg);
-            //}
-            //else
-            //{
-            //    //检测账号是否存在
-            //    if (!dboperate.check_account(arr_recv[1]))
-            //    {
-            //        string str_msg = "retcode&0&账号不存在";
-            //        send_data(s_client, str_msg);
-            //        return;
-            //    }
+            if (arr_recv.Length < 4)
+            {
+                return;
+            }
 
-            //    //检测密码是否正确
-            //    if (!dboperate.check_pass(arr_recv[1], arr_recv[2]))
-            //    {
-            //        string str_msg = "retcode&0&密码错误";
-            //        send_data(s_client, str_msg);
-            //        return;
-            //    }
-
-            //    //账号、密码检测通过后，从数据库中获取用户的基本信息
-            //    Dictionary<string, string> map_result = dboperate.get_user_info(arr_recv[1]);
-            //    if (!map_result.ContainsKey("userid") || !map_result.ContainsKey("name") ||
-            //        !map_result.ContainsKey("sex") || !map_result.ContainsKey("head"))
-            //    {
-            //        string str_msg = "retcode&0&获取用户数据失败";
-            //        send_data(s_client, str_msg);
-            //    }
-            //    else
-            //    {
-            //        //添加到在线列表
-            //        if (!online_players.ContainsKey(int.Parse(map_result["userid"])))
-            //        {
-            //            online_players.Add(int.Parse(map_result["userid"]), s_client);
-            //        }
-            //        else
-            //        {
-            //            online_players[int.Parse(map_result["userid"])] = s_client;
-            //        }
-
-            //        if (!online_sockets.ContainsKey(s_client))
-            //        {
-            //            online_sockets.Add(s_client, int.Parse(map_result["userid"]));
-            //        }
-            //        else
-            //        {
-            //            online_sockets[s_client] = int.Parse(map_result["userid"]);
-            //        }
-
-            //        //返回用户信息给客户端
-            //        string str_msg = String.Format(@"login_rsp&{0}&{1}&{2}&{3}&{4}&{5}",
-            //            arr_recv[1], map_result["userid"].ToString(), map_result["name"].ToString(),
-            //            map_result["sex"].ToString(), map_result["head"].ToString(), arr_recv[2]);
-            //        send_data(s_client, str_msg);
-            //    }
-            //}
+            //从数据库中获取用户的基本信息
+            int userid = get_online_userid(s_client);
+            Dictionary<string, string> map_result = dboperate.get_user_info_from_userid(userid);
+            if (!map_result.ContainsKey("userid") || !map_result.ContainsKey("name") ||
+                !map_result.ContainsKey("pass") || !map_result.ContainsKey("head"))
+            {
+                string str_msg = "retcode&0&修改用户资料失败";
+                send_data(s_client, str_msg);
+            }
+            else
+            {
+                //修改用户资料
+                dboperate.modify_userinfo(userid, arr_recv);
+                //如果用户昵称和头像发生了变化，则通知客户端
+                if (arr_recv[2] != map_result["name"].ToString() || arr_recv[3] != map_result["head"].ToString())
+                {
+                    string str_msg = String.Format(@"modify_rsp&{0}&{1}&{2}", arr_recv[1], arr_recv[2], arr_recv[3]);
+                    send_data(s_client, str_msg);
+                }
+            }
         }
     }
 }
