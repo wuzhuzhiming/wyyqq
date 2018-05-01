@@ -23,9 +23,10 @@ namespace qqclient
             InitializeComponent();
         }
 
-        public void set_user_info(string user_name, int user_head)
+        public void set_user_info(string user_pass, string user_name, int user_head)
         {
             head_index = user_head;
+            tb_pass.Text = user_pass;
             tb_name.Text = user_name;
             Frm_login frm_login = (Frm_login)(this.Owner.Owner);
             pb_head.BackgroundImage = frm_login.get_imglisthead().Images[user_head - 1];
@@ -88,7 +89,7 @@ namespace qqclient
             string str_name = tb_name.Text;
 
             //检测密码、昵称的长度
-            if (str_pass.Length > 0 && str_pass.Length < 6)
+            if (str_pass.Length < 6)
             {
                 MessageBox.Show("密码不能少于6位");
                 return;
@@ -101,7 +102,7 @@ namespace qqclient
 
             //如果用户资料发生了变化，则发送用户的新数据给服务器
             Frm_main frm_main = (Frm_main)(this.Owner);
-            if ((str_pass.Length > 0 && str_pass != frm_main.self_pass) || 
+            if (str_pass != frm_main.self_pass || 
                 str_name != frm_main.self_name ||
                 head_index != frm_main.self_head)
             {
@@ -117,6 +118,7 @@ namespace qqclient
         {
             Frm_head frm_head = new Frm_head();
             frm_head.Owner = this;
+            frm_head.owner_type = 2;
             frm_head.Show();
         }
 
@@ -124,7 +126,7 @@ namespace qqclient
         public void select_head(int head)
         {
             head_index = head;
-            Frm_login frm_login = (Frm_login)(this.Owner);
+            Frm_login frm_login = (Frm_login)(this.Owner.Owner);
             pb_head.BackgroundImage = frm_login.get_imglisthead().Images[head - 1];
         }
     }

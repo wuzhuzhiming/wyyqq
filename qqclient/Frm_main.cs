@@ -288,7 +288,7 @@ namespace qqclient
             //弹出修改资料窗口
             Frm_modify frm_modify = new Frm_modify();
             frm_modify.Owner = this;
-            frm_modify.set_user_info(self_name, self_head);
+            frm_modify.set_user_info(self_pass, self_name, self_head);
             frm_modify.Show();
         }
 

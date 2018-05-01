@@ -34,12 +34,12 @@ namespace qqclient
         {
             if (owner_type == 1)
             {
-                Frm_register frm_register = (Frm_register)this.Owner;
+                Frm_register frm_register = (Frm_register)(this.Owner);
                 frm_register.select_head(selected_index);
             }
             else if (owner_type == 2)
             {
-                Frm_modify frm_modify = (Frm_modify)this.Owner;
+                Frm_modify frm_modify = (Frm_modify)(this.Owner);
                 frm_modify.select_head(selected_index);
             }
 
