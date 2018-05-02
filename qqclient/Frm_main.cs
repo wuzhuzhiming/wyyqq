@@ -33,6 +33,13 @@ namespace qqclient
         //聊天窗口列表
         Dictionary<int, Form> map_chatfrm = new Dictionary<int, Form>();
 
+        //头像列表
+        Dictionary<int, ListViewItem> map_head = new Dictionary<int, ListViewItem>();
+        //头像跳动列表
+        Dictionary<int, bool> map_beat = new Dictionary<int, bool>();
+        //头像跳动标识
+        bool beat_flag = false;
+
         //添加好友窗口
         public Frm_add_friend frm_add_friend = null;
 
@@ -200,6 +207,9 @@ namespace qqclient
                 lvitem.SubItems.Add(friend_name);
                 lv_friend.Items.Add(lvitem);
 
+                //添加到头像跳动列表
+                map_head.Add(friend_userid, lvitem);
+
                 //添加到好友信息列表中保存
                 friend_info friendinfo;
                 friendinfo.userid = friend_userid;
@@ -237,6 +247,13 @@ namespace qqclient
 
                     //显示聊天窗口
                     frm_chat.Show();
+                    //停止头像跳动
+                    map_beat.Remove(selected_userid);
+                    //显示好友头像
+                    if (map_head.ContainsKey(selected_userid) && map_friendinfo.ContainsKey(selected_userid))
+                    {
+                        map_head[selected_userid].ImageIndex = map_friendinfo[selected_userid].head - 1;
+                    }
                 }
             }
         }
@@ -274,6 +291,11 @@ namespace qqclient
                 //添加本次聊天信息到聊天窗口
                 string str_cur_chat = map_friendinfo[friend_userid].name + " " + DateTime.Now.ToString() + "\n  " + arr_recv[2];
                 frm_chat.recv_chat(str_cur_chat);
+                //如果聊天窗口处于隐藏状态，则添加到头像跳动列表
+                if (!frm_chat.Visible)
+                {
+                    map_beat[friend_userid] = true;
+                }
             }
         }
 
@@ -307,6 +329,35 @@ namespace qqclient
             lb_name.Text = self_name;
             Frm_login frm_login = (Frm_login)(this.Owner);
             pb_head.BackgroundImage = frm_login.get_imglisthead().Images[self_head - 1];
+        }
+
+        //好友头像跳动定时器
+        private void tm_msg_Tick(object sender, EventArgs e)
+        {
+            if (!beat_flag)
+            {
+                beat_flag = true;
+                foreach (var item in map_beat)
+                {
+                    int cur_userid = item.Key;
+                    if (map_head.ContainsKey(cur_userid))
+                    {
+                        map_head[cur_userid].ImageIndex = 8;
+                    }
+                }
+            }
+            else
+            {
+                beat_flag = false;
+                foreach (var item in map_beat)
+                {
+                    int cur_userid = item.Key;
+                    if (map_head.ContainsKey(cur_userid) && map_friendinfo.ContainsKey(cur_userid))
+                    {
+                        map_head[cur_userid].ImageIndex = map_friendinfo[cur_userid].head - 1;
+                    }
+                }
+            }
         }
     }
 }

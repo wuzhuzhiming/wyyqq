@@ -47,6 +47,7 @@
             this.cms_menu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmi_modify = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_exit = new System.Windows.Forms.ToolStripMenuItem();
+            this.tm_msg = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pb_head)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.cms_menu.SuspendLayout();
@@ -199,6 +200,7 @@
             this.imglist_head.Images.SetKeyName(5, "head6.jpg");
             this.imglist_head.Images.SetKeyName(6, "head7.jpg");
             this.imglist_head.Images.SetKeyName(7, "head8.jpg");
+            this.imglist_head.Images.SetKeyName(8, "0.jpg");
             // 
             // bt_menu
             // 
@@ -220,21 +222,27 @@
             this.tsmi_modify,
             this.tsmi_exit});
             this.cms_menu.Name = "cms_menu";
-            this.cms_menu.Size = new System.Drawing.Size(181, 70);
+            this.cms_menu.Size = new System.Drawing.Size(125, 48);
             // 
             // tsmi_modify
             // 
             this.tsmi_modify.Name = "tsmi_modify";
-            this.tsmi_modify.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_modify.Size = new System.Drawing.Size(124, 22);
             this.tsmi_modify.Text = "修改资料";
             this.tsmi_modify.Click += new System.EventHandler(this.tsmi_modify_Click);
             // 
             // tsmi_exit
             // 
             this.tsmi_exit.Name = "tsmi_exit";
-            this.tsmi_exit.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_exit.Size = new System.Drawing.Size(124, 22);
             this.tsmi_exit.Text = "退出";
             this.tsmi_exit.Click += new System.EventHandler(this.tsmi_exit_Click);
+            // 
+            // tm_msg
+            // 
+            this.tm_msg.Enabled = true;
+            this.tm_msg.Interval = 500;
+            this.tm_msg.Tick += new System.EventHandler(this.tm_msg_Tick);
             // 
             // Frm_main
             // 
@@ -287,5 +295,6 @@
         private System.Windows.Forms.ContextMenuStrip cms_menu;
         private System.Windows.Forms.ToolStripMenuItem tsmi_modify;
         private System.Windows.Forms.ToolStripMenuItem tsmi_exit;
+        private System.Windows.Forms.Timer tm_msg;
     }
 }
